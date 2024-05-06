@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Yamify</string>
+    <string name="ingredients">Ингредиенты</string>
+    <string name="recipe">Рецепт</string>
+    <string name="favourites">Избранное</string>
+</resources>
