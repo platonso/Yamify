@@ -6,11 +6,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.platonso.yamify.databinding.ActivityMainBinding
+import com.platonso.yamify.ui.favourites.FavouritesFragment
+import com.platonso.yamify.ui.ingredients.IngredientsFragment
+import com.platonso.yamify.ui.recipe.RecipeFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,18 +34,24 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+        replaceFragment(IngredientsFragment())
 
-        val navView: BottomNavigationView = binding.navView
+        binding.navView.setOnItemSelectedListener {
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
-            )
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+            when(it.itemId){
+                R.id.ingredients -> replaceFragment(IngredientsFragment())
+                R.id.recipe -> replaceFragment(RecipeFragment())
+                R.id.favourites -> replaceFragment(FavouritesFragment())
+            }
+            true
+        }
+    }
+
+    private fun replaceFragment(fragment : Fragment){
+
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.container,fragment)
+        fragmentTransaction.commit()
     }
 }
