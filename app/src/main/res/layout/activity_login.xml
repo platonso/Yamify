@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:id="@+id/login"
-    android:background="#e6e6fa"
+    android:background="#FFF0E8F6"
     tools:context=".LoginActivity">
 
     <TextView
@@ -51,7 +51,8 @@
                 android:layout_height="45dp"
                 android:id="@+id/email_edit_text"
                 android:background="@drawable/rounded_corners"
-                android:padding="8dp"
+                android:padding="12dp"
+                android:textSize="15sp"
                 android:inputType="textEmailAddress"
                 android:hint="Email" />
 
@@ -61,7 +62,8 @@
                 android:id="@+id/password_edit_text"
                 android:background="@drawable/rounded_corners"
                 android:layout_marginTop="20dp"
-                android:padding="8dp"
+                android:padding="12dp"
+                android:textSize="15sp"
                 android:hint="Password"
                 android:inputType="textPassword" />
 
@@ -92,7 +94,7 @@
                 android:layout_gravity="center"
                 android:padding="8dp"
                 android:layout_marginTop="10dp"
-                android:textSize="15sp"/>
+                android:textSize="14sp"/>
 
 
         </LinearLayout>

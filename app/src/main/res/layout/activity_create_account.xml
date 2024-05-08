@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:id="@+id/create"
-    android:background="#e6e6fa"
+    android:background="#FFF0E8F6"
     tools:context=".CreateAccountActivity">
 
     <TextView
@@ -51,7 +51,8 @@
                 android:layout_height="45dp"
                 android:id="@+id/email_edit_text"
                 android:background="@drawable/rounded_corners"
-                android:padding="8dp"
+                android:padding="12dp"
+                android:textSize="15sp"
                 android:inputType="textEmailAddress"
                 android:hint="Email" />
 
@@ -61,7 +62,8 @@
                 android:id="@+id/password_edit_text"
                 android:background="@drawable/rounded_corners"
                 android:layout_marginTop="20dp"
-                android:padding="8dp"
+                android:padding="12dp"
+                android:textSize="15sp"
                 android:hint="Password"
                 android:inputType="textPassword" />
 
@@ -71,7 +73,8 @@
                 android:id="@+id/confirm_password_edit_text"
                 android:background="@drawable/rounded_corners"
                 android:layout_marginTop="20dp"
-                android:padding="8dp"
+                android:padding="12dp"
+                android:textSize="15sp"
                 android:hint="Confirm Password"
                 android:inputType="textPassword"/>
 
@@ -97,11 +100,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/login_text_view_btn"
-                android:text="Already have an account? Login"
+                android:text="Already have an account?  Login"
                 android:layout_gravity="center"
                 android:padding="8dp"
                 android:layout_marginTop="10dp"
-                android:textSize="13sp"/>
+                android:textSize="14sp"/>
 
 
         </LinearLayout>
