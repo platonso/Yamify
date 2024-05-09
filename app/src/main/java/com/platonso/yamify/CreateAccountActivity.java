@@ -1,6 +1,7 @@
 package com.platonso.yamify;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -77,6 +78,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         changeInProgress(false);
                         if (task.isSuccessful()){
+                            startActivity(new Intent(CreateAccountActivity.this,MainActivity.class));
                             Toast.makeText(CreateAccountActivity.this,
                                     "Successfully create account", Toast.LENGTH_SHORT).show();
 
