@@ -1,6 +1,7 @@
-package com.platonso.yamify
+package com.platonso.yamify.activity
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.platonso.yamify.R
 import com.platonso.yamify.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -30,18 +32,9 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
-        val navView: BottomNavigationView = binding.navView
-
+        val navView: BottomNavigationView = binding.bottomNavView
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_ingredients, R.id.navigation_recipe, R.id.navigation_favourites
-            )
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
     }
 }

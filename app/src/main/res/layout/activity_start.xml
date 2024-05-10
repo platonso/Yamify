@@ -8,6 +8,6 @@
     android:orientation="vertical"
     android:id="@+id/splash"
     android:gravity="center"
-    tools:context=".StartActivity">
+    tools:context=".activity.StartActivity">
 
 </LinearLayout>

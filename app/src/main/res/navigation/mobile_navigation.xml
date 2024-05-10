@@ -8,7 +8,11 @@
     <fragment
         android:id="@+id/navigation_ingredients"
         android:name="com.platonso.yamify.ui.ingredients.IngredientsFragment"
-        tools:layout="@layout/fragment_ingredients" />
+        tools:layout="@layout/fragment_ingredients" >
+        <action
+            android:id="@+id/action_navigation_ingredients_to_navigation_recipe"
+            app:destination="@id/navigation_recipe" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_recipe"
