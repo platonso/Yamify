@@ -7,12 +7,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.platonso.yamify.R
 import com.platonso.yamify.databinding.ActivityMainBinding
+import com.platonso.yamify.ui.favourites.FavouritesFragment
+import com.platonso.yamify.ui.ingredients.IngredientsFragment
+import com.platonso.yamify.ui.recipe.RecipeFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,9 +36,24 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        val navView: BottomNavigationView = binding.bottomNavView
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        navView.setupWithNavController(navController)
+        replaceFragment(IngredientsFragment())
 
+        binding.bottomNavView.setOnItemSelectedListener {
+
+            when(it.itemId){
+                R.id.navigation_ingredients -> replaceFragment(IngredientsFragment())
+                R.id.navigation_recipe -> replaceFragment(RecipeFragment())
+                R.id.navigation_favourites -> replaceFragment(FavouritesFragment())
+            }
+            true
+        }
+    }
+
+    private fun replaceFragment(fragment : Fragment){
+
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.nav_host_fragment_activity_main,fragment)
+        fragmentTransaction.commit()
     }
 }
