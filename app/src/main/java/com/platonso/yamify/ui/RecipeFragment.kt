@@ -1,4 +1,4 @@
-package com.platonso.yamify.ui.recipe
+package com.platonso.yamify.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +12,7 @@ import com.platonso.yamify.databinding.FragmentRecipeBinding
 class RecipeFragment : Fragment() {
 
     private var _binding: FragmentRecipeBinding? = null
+    private lateinit var sharedViewModel: SharedViewModel
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,17 +23,16 @@ class RecipeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val recipeViewModel =
-            ViewModelProvider(this).get(RecipeViewModel::class.java)
+        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
         _binding = FragmentRecipeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
+        // Отображение прошлого результата
         val textView: TextView = binding.textRecipe
-        recipeViewModel.text.observe(viewLifecycleOwner) {
+        sharedViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
-        return root
+        return binding.root
     }
 
     override fun onDestroyView() {

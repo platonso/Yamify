@@ -1,26 +1,34 @@
 package com.platonso.yamify.activity
 
 import android.os.Bundle
-import android.view.MenuItem
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.lifecycle.ViewModelProvider
 import com.platonso.yamify.R
+import com.platonso.yamify.ui.SharedViewModel
 import com.platonso.yamify.databinding.ActivityMainBinding
-import com.platonso.yamify.ui.favourites.FavouritesFragment
-import com.platonso.yamify.ui.ingredients.IngredientsFragment
-import com.platonso.yamify.ui.recipe.RecipeFragment
+import com.platonso.yamify.ui.FavouritesFragment
+import com.platonso.yamify.ui.IngredientsFragment
+import com.platonso.yamify.ui.RecipeFragment
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var sharedViewModel: SharedViewModel
+    private val client = OkHttpClient()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,26 +42,109 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
             insets
         }
+        sharedViewModel = ViewModelProvider(this).get(SharedViewModel::class.java)
 
 
         replaceFragment(IngredientsFragment())
 
         binding.bottomNavView.setOnItemSelectedListener {
 
-            when(it.itemId){
+            when (it.itemId) {
                 R.id.navigation_ingredients -> replaceFragment(IngredientsFragment())
                 R.id.navigation_recipe -> replaceFragment(RecipeFragment())
                 R.id.navigation_favourites -> replaceFragment(FavouritesFragment())
             }
             true
         }
+
     }
 
-    private fun replaceFragment(fragment : Fragment){
+    private fun replaceFragment(fragment: Fragment) {
 
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.nav_host_fragment_activity_main,fragment)
+        fragmentTransaction.replace(R.id.nav_host_fragment_activity_main, fragment)
         fragmentTransaction.commit()
+
+    }
+
+
+    fun sendRequest(question: String) {
+
+        // Создание объекта и добавление значений в JSON
+        val jsonBody = JSONObject().apply {
+            put("modelUri", "gpt://b1gp1ia0bndrc90m55bm/yandexgpt")
+
+            val completionOptions = JSONObject().apply {
+                put("stream", false)
+                put("temperature", 0.5)
+                put("maxTokens", 2000)
+            }
+            put("completionOptions", completionOptions)
+
+            // Создание массива сообщений
+            val messages = JSONArray().apply {
+                // Создание объекта сообщения и добавление его в массив
+                val message = JSONObject().apply {
+                    put("role", "user")
+                    put("text", question)
+                }
+                put(message)
+            }
+            // Добавление массива сообщений в объект JSON
+            put("messages", messages)
+        }
+
+        val requestBody = jsonBody.toString().toRequestBody("application/json".toMediaType())
+
+        val request = Request.Builder()
+            .url("https://llm.api.cloud.yandex.net/foundationModels/v1/completion")
+            .header("Authorization", "Api-Key AQVN2XYaLq0s-hHUx50Eyou45Tefnm9Ii7hpcajA")
+            .post(requestBody)
+            .build()
+
+        client.newCall(request).enqueue(object : okhttp3.Callback {
+            override fun onFailure(call: okhttp3.Call, e: IOException) {
+                runOnUiThread {
+                    Toast.makeText(applicationContext, e.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                response.body?.let { responseBody ->
+                    if (response.isSuccessful) {
+                        try {
+                            val jsonResponse = JSONObject(responseBody.string())
+                            val alternatives = jsonResponse
+                                .getJSONObject("result")
+                                .getJSONArray("alternatives")
+                            val text = alternatives
+                                .getJSONObject(0)
+                                .getJSONObject("message")
+                                .getString("text")
+
+                            // Обновление ViewModel
+                            runOnUiThread {
+                                sharedViewModel.setText(text)
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        } finally {
+
+                            // Закрытие ResponseBody для избежания утечек ресурсов
+                            responseBody.close()
+                        }
+                    } else {
+                        Log.e("Response Error", "Code: ${response.code}")
+                    }
+                }
+            }
+        })
+
+
     }
 }
+
+
+
+

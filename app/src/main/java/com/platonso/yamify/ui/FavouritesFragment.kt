@@ -1,4 +1,4 @@
-package com.platonso.yamify.ui.favourites
+package com.platonso.yamify.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +12,7 @@ import com.platonso.yamify.databinding.FragmentFavouritesBinding
 class FavouritesFragment : Fragment() {
 
     private var _binding: FragmentFavouritesBinding? = null
+    private lateinit var sharedViewModel: SharedViewModel
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +23,13 @@ class FavouritesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val favouritesViewModel =
-            ViewModelProvider(this).get(FavouritesViewModel::class.java)
+        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
         _binding = FragmentFavouritesBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textFavourites
-        favouritesViewModel.text.observe(viewLifecycleOwner) {
+        sharedViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root

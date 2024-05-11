@@ -1,13 +1,18 @@
-package com.platonso.yamify.ui.recipe
+package com.platonso.yamify.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class RecipeViewModel : ViewModel() {
+class SharedViewModel: ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is recipe Fragment"
+        value = "Здесь будет рецепт"
     }
+
     val text: LiveData<String> = _text
+
+    fun setText(newText: String) {
+        _text.value = newText
+    }
 }
