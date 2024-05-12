@@ -87,7 +87,8 @@ class MainActivity : AppCompatActivity() {
                 // Создание объекта сообщения и добавление его в массив
                 val message = JSONObject().apply {
                     put("role", "user")
-                    put("text", question)
+                    put("text", "Cоставь рецепт блюда только из данных ингредиентов: " +
+                            "$question")
                 }
                 put(message)
             }
@@ -118,10 +119,11 @@ class MainActivity : AppCompatActivity() {
                             val alternatives = jsonResponse
                                 .getJSONObject("result")
                                 .getJSONArray("alternatives")
-                            val text = alternatives
+                            var text = alternatives
                                 .getJSONObject(0)
                                 .getJSONObject("message")
                                 .getString("text")
+                            text=text.replace("*", "")
 
                             // Обновление ViewModel
                             runOnUiThread {
@@ -140,8 +142,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
-
-
     }
 }
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -29,8 +30,7 @@ class IngredientsFragment : Fragment() {
 
         _binding = FragmentIngredientsBinding.inflate(inflater, container, false)
 
-
-
+        /*
         // Отправка нового запроса и переход на фрагмент Recipe
         binding.getRecipe.setOnClickListener {
             val question = binding.textEdit.text.toString()
@@ -45,6 +45,8 @@ class IngredientsFragment : Fragment() {
                 ?.selectedItemId = R.id.navigation_recipe
         }
 
+
+         */
         return binding.root
 
     }
