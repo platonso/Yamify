@@ -6,13 +6,20 @@ import androidx.lifecycle.ViewModel
 
 class SharedViewModel: ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "Здесь будет рецепт"
+    private val _recipe = MutableLiveData<String>()
+    private val _ingredients = MutableLiveData<String>()
+    val toggleButtonStates = mutableMapOf<Int, Boolean>()
+
+    val recipe: LiveData<String> = _recipe
+
+    fun setIngredients(ingredients: String){
+        _ingredients.value = ingredients
     }
 
-    val text: LiveData<String> = _text
-
-    fun setText(newText: String) {
-        _text.value = newText
+    fun setRecipe(recipe: String) {
+        _recipe.value = recipe
     }
+
+
+
 }

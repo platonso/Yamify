@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sharedViewModel: SharedViewModel
     private val client = OkHttpClient()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
@@ -44,7 +43,6 @@ class MainActivity : AppCompatActivity() {
         }
         sharedViewModel = ViewModelProvider(this).get(SharedViewModel::class.java)
 
-
         replaceFragment(IngredientsFragment())
 
         binding.bottomNavView.setOnItemSelectedListener {
@@ -56,7 +54,6 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-
     }
 
     private fun replaceFragment(fragment: Fragment) {
@@ -65,13 +62,9 @@ class MainActivity : AppCompatActivity() {
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.nav_host_fragment_activity_main, fragment)
         fragmentTransaction.commit()
-
     }
 
-
-    fun sendRequest(question: String) {
-
-        val promt = getString(R.string.promt)
+    fun sendRequest(promt: String, question: String) {
 
         // Создание объекта и добавление значений в JSON
         val jsonBody = JSONObject().apply {
@@ -120,16 +113,18 @@ class MainActivity : AppCompatActivity() {
                             val alternatives = jsonResponse
                                 .getJSONObject("result")
                                 .getJSONArray("alternatives")
-                            var text = alternatives
+                            var text: String = alternatives
                                 .getJSONObject(0)
                                 .getJSONObject("message")
                                 .getString("text")
                             text = text.replace("*", "")
+                            text = text.replace("#", "")
 
                             // Обновление ViewModel
                             runOnUiThread {
-                                sharedViewModel.setText(text)
+                                sharedViewModel.setRecipe(text)
                             }
+
                         } catch (e: Exception) {
                             e.printStackTrace()
                         } finally {

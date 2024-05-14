@@ -28,11 +28,15 @@ class FavouritesFragment : Fragment() {
         _binding = FragmentFavouritesBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textFavourites
-        sharedViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+        binding.textFavourites.text="Здесь будут избранные рецепты"
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+
     }
 
     override fun onDestroyView() {

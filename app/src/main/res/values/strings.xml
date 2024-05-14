@@ -32,5 +32,6 @@
     <string name="mushroom">Грибы</string>
     <string name="onion">Лук</string>
     <string name="meat_and_cheese">Мясо и сыр</string>
-    <string name="promt">cоставь рецепт блюда только из данных ингредиентов:</string>
+    <string name="recipe_will_be_here">Здесь будет рецепт</string>
+    <string name="promt">Составь рецепт блюда только из данных ингредиентов:</string>
 </resources>

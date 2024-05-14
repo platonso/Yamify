@@ -32,31 +32,13 @@ class IngredientsFragment : Fragment() {
 
         _binding = FragmentIngredientsBinding.inflate(inflater, container, false)
 
-        /*
-        // Отправка нового запроса и переход на фрагмент Recipe
-        binding.getRecipeButton.setOnClickListener {
-            val question = binding.textEdit.text.toString()
-            val activity = requireActivity() as? MainActivity
-            activity?.sendRequest(question)
-
-
-            val fragmentTransaction = fragmentManager?.beginTransaction()
-            fragmentTransaction?.replace(R.id.nav_host_fragment_activity_main, RecipeFragment())
-            fragmentTransaction?.commit()
-            (activity as MainActivity).findViewById<BottomNavigationView>(R.id.bottom_nav_view)
-                ?.selectedItemId = R.id.navigation_recipe
-        }
-
-         */
-
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val buttonIds = arrayOf(R.id.toggleButton_mushroom, R.id.toggleButton_avocado,
+        val toggleButtonIds = arrayOf(R.id.toggleButton_mushroom, R.id.toggleButton_avocado,
             R.id.toggleButton_beef, R.id.toggleButton_bread, R.id.toggleButton_cheese,
             R.id.toggleButton_chicken, R.id.toggleButton_crab, R.id.toggleButton_cucumber,
             R.id.toggleButton_egg, R.id.toggleButton_fish, R.id.toggleButton_flour,
@@ -64,28 +46,42 @@ class IngredientsFragment : Fragment() {
             R.id.toggleButton_potato, R.id.toggleButton_rice, R.id.toggleButton_salad,
             R.id.toggleButton_salmon, R.id.toggleButton_shrimp, R.id.toggleButton_tomato)
 
+        // Установка начальных состояний из ViewModel
+        for (id in toggleButtonIds) {
+            val toggleButton = view.findViewById<ToggleButton>(id)
+            toggleButton.isChecked = sharedViewModel.toggleButtonStates[id] ?: false
+
+            // Сохранение состояния при изменении
+            toggleButton.setOnCheckedChangeListener { _, isChecked ->
+                sharedViewModel.toggleButtonStates[id] = isChecked
+            }
+        }
 
         binding.getRecipeButton.setOnClickListener {
+            // Добавление значений ингредиентов с кнопок в массив
             val selectedItems = mutableListOf<String>()
-            for (id in buttonIds) {
+            for (id in toggleButtonIds) {
                 val toggleButton = view.findViewById<ToggleButton>(id)
                 if (toggleButton.isChecked) {
                     selectedItems.add(toggleButton.contentDescription.toString())
                 }
             }
-            val selectedItemsString = selectedItems.joinToString(", ")
-            sharedViewModel.setText(selectedItemsString)
 
+            if (selectedItems.isNotEmpty()) {
+                val selectedItemsString = selectedItems.joinToString(", ")
+                sharedViewModel.setIngredients(selectedItemsString)
 
-            val activity = requireActivity() as? MainActivity
-            activity?.sendRequest(selectedItemsString)
+                val activity = requireActivity() as? MainActivity
+                activity?.sendRequest(getString(R.string.promt), selectedItemsString)
 
-
-            val fragmentTransaction = fragmentManager?.beginTransaction()
-            fragmentTransaction?.replace(R.id.nav_host_fragment_activity_main, RecipeFragment())
-            fragmentTransaction?.commit()
-            (activity as MainActivity).findViewById<BottomNavigationView>(R.id.bottom_nav_view)
-                ?.selectedItemId = R.id.navigation_recipe
+                val fragmentTransaction = fragmentManager?.beginTransaction()
+                fragmentTransaction?.replace(R.id.nav_host_fragment_activity_main, RecipeFragment())
+                fragmentTransaction?.commit()
+                (activity as MainActivity).findViewById<BottomNavigationView>(R.id.bottom_nav_view)
+                    ?.selectedItemId = R.id.navigation_recipe
+            }else{
+                Toast.makeText(requireContext(), "Выберите ингредиенты", Toast.LENGTH_SHORT).show()
+            }
         }
 
     }
