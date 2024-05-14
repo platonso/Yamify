@@ -71,6 +71,8 @@ class MainActivity : AppCompatActivity() {
 
     fun sendRequest(question: String) {
 
+        val promt = getString(R.string.promt)
+
         // Создание объекта и добавление значений в JSON
         val jsonBody = JSONObject().apply {
             put("modelUri", "gpt://b1gp1ia0bndrc90m55bm/yandexgpt")
@@ -87,8 +89,7 @@ class MainActivity : AppCompatActivity() {
                 // Создание объекта сообщения и добавление его в массив
                 val message = JSONObject().apply {
                     put("role", "user")
-                    put("text", "Cоставь рецепт блюда только из данных ингредиентов: " +
-                            "$question")
+                    put("text", "$promt $question")
                 }
                 put(message)
             }
@@ -123,7 +124,7 @@ class MainActivity : AppCompatActivity() {
                                 .getJSONObject(0)
                                 .getJSONObject("message")
                                 .getString("text")
-                            text=text.replace("*", "")
+                            text = text.replace("*", "")
 
                             // Обновление ViewModel
                             runOnUiThread {
