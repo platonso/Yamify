@@ -11,12 +11,11 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.Query
 import com.platonso.yamify.data.Favourites
 import com.platonso.yamify.databinding.FragmentFavouritesBinding
-import android.content.Context
 
 class FavouritesFragment : Fragment() {
 
     private var _binding: FragmentFavouritesBinding? = null
-    private lateinit var sharedViewModel: SharedViewModel
+    private lateinit var recipeViewModel: RecipeViewModel
     private lateinit var recipeAdapter: RecipeAdapter
 
     // This property is only valid between onCreateView and
@@ -28,16 +27,10 @@ class FavouritesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+        recipeViewModel = ViewModelProvider(requireActivity()).get(RecipeViewModel::class.java)
 
         _binding = FragmentFavouritesBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        //binding.textFavourites.text="Здесь будут избранные рецепты"
-
-        setupRecyclerView()
-
-
 
         return root
     }

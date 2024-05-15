@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.fragment.app.Fragment
@@ -17,7 +16,7 @@ import com.platonso.yamify.databinding.FragmentIngredientsBinding
 class IngredientsFragment : Fragment() {
 
     private var _binding: FragmentIngredientsBinding? = null
-    private lateinit var sharedViewModel: SharedViewModel
+    private lateinit var recipeViewModel: RecipeViewModel
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -28,7 +27,7 @@ class IngredientsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+        recipeViewModel = ViewModelProvider(requireActivity()).get(RecipeViewModel::class.java)
 
         _binding = FragmentIngredientsBinding.inflate(inflater, container, false)
 
@@ -49,11 +48,11 @@ class IngredientsFragment : Fragment() {
         // Установка начальных состояний из ViewModel
         for (id in toggleButtonIds) {
             val toggleButton = view.findViewById<ToggleButton>(id)
-            toggleButton.isChecked = sharedViewModel.toggleButtonStates[id] ?: false
+            toggleButton.isChecked = recipeViewModel.toggleButtonStates[id] ?: false
 
             // Сохранение состояния при изменении
             toggleButton.setOnCheckedChangeListener { _, isChecked ->
-                sharedViewModel.toggleButtonStates[id] = isChecked
+                recipeViewModel.toggleButtonStates[id] = isChecked
             }
         }
 
@@ -69,7 +68,7 @@ class IngredientsFragment : Fragment() {
 
             if (selectedItems.isNotEmpty()) {
                 val selectedItemsString = selectedItems.joinToString(", ")
-                sharedViewModel.setIngredients(selectedItemsString)
+                recipeViewModel.setIngredients(selectedItemsString)
 
                 val activity = requireActivity() as? MainActivity
                 activity?.sendRequest(getString(R.string.promt), selectedItemsString)

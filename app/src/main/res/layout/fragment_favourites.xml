@@ -21,7 +21,10 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center|start"
-            android:text="Почта пользователя@mail.ru"
+            android:text="Почта@mail.ru"
+            android:textStyle="bold"
+            android:paddingStart="12dp"
+            android:textSize="15sp"
             app:layout_constraintEnd_toStartOf="@id/exit_btn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -41,7 +44,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:paddingStart="5dp"
-            android:text="Выйти"
+            android:text="@string/exit"
+            android:textSize="15sp"
             android:gravity="center_vertical"
             tools:ignore="RtlSymmetry" />
 
@@ -53,7 +57,7 @@
         android:id="@+id/recyler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="20dp"/>
+        android:paddingTop="10dp"/>
 
 
 </LinearLayout>

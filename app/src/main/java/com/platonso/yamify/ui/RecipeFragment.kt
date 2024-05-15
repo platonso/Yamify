@@ -1,6 +1,7 @@
 package com.platonso.yamify.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,9 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.android.identity.android.legacy.Utility
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.model.Document
 import com.platonso.yamify.R
 import com.platonso.yamify.data.Favourites
 import com.platonso.yamify.databinding.FragmentRecipeBinding
@@ -18,7 +17,7 @@ import com.platonso.yamify.databinding.FragmentRecipeBinding
 class RecipeFragment : Fragment() {
 
     private var _binding: FragmentRecipeBinding? = null
-    private lateinit var sharedViewModel: SharedViewModel
+    private lateinit var recipeViewModel: RecipeViewModel
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -29,7 +28,7 @@ class RecipeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+        recipeViewModel = ViewModelProvider(requireActivity()).get(RecipeViewModel::class.java)
         _binding = FragmentRecipeBinding.inflate(inflater, container, false)
         binding.textRecipe.text = getString(R.string.recipe_will_be_here)
         return binding.root
@@ -40,7 +39,7 @@ class RecipeFragment : Fragment() {
 
         // Отображение результата
         val textView: TextView = binding.textRecipe
-        sharedViewModel.recipe.observe(viewLifecycleOwner) {
+        recipeViewModel.recipe.observe(viewLifecycleOwner) {
             textView.text = it
         }
 
@@ -48,8 +47,6 @@ class RecipeFragment : Fragment() {
         binding.buttonAddToFavourites.setOnClickListener {
             saveRecipe()
         }
-
-
 
     }
 
@@ -61,9 +58,12 @@ class RecipeFragment : Fragment() {
             return
         }
 
+        val title = textRecipe.toString().substringBefore("\n")
+        val content = textRecipe.toString().replaceFirst(title, "")
+
         val favourites = Favourites()
-        favourites.setTitle("Заголовок")
-        favourites.setContent(textRecipe.toString())
+        favourites.setTitle(title)
+        favourites.setContent(content)
         saveRecipeToFirebase(favourites)
     }
 

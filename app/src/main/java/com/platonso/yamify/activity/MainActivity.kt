@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.platonso.yamify.R
-import com.platonso.yamify.ui.SharedViewModel
+import com.platonso.yamify.ui.RecipeViewModel
 import com.platonso.yamify.databinding.ActivityMainBinding
 import com.platonso.yamify.ui.FavouritesFragment
 import com.platonso.yamify.ui.IngredientsFragment
@@ -26,7 +26,7 @@ import java.io.IOException
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var sharedViewModel: SharedViewModel
+    private lateinit var recipeViewModel: RecipeViewModel
     private val client = OkHttpClient()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
             insets
         }
-        sharedViewModel = ViewModelProvider(this).get(SharedViewModel::class.java)
+        recipeViewModel = ViewModelProvider(this).get(RecipeViewModel::class.java)
 
         replaceFragment(IngredientsFragment())
 
@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity() {
 
                             // Обновление ViewModel
                             runOnUiThread {
-                                sharedViewModel.setRecipe(text)
+                                recipeViewModel.setRecipe(text)
                             }
 
                         } catch (e: Exception) {

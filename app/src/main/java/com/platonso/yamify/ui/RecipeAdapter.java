@@ -27,7 +27,7 @@ public class RecipeAdapter extends FirestoreRecyclerAdapter<Favourites, RecipeAd
     @Override
     protected void onBindViewHolder(@NonNull RecipeViewHolder holder, int i, @NonNull Favourites favourites) {
         holder.titleTextView.setText(favourites.getTitle());
-        holder.contentTextView.setText(favourites.getContent());
+        //holder.contentTextView.setText(favourites.getContent());
     }
 
     @NonNull
@@ -50,7 +50,7 @@ public class RecipeAdapter extends FirestoreRecyclerAdapter<Favourites, RecipeAd
             super(itemView);
 
             titleTextView = itemView.findViewById(R.id.recipe_title_text_view);
-            contentTextView = itemView.findViewById(R.id.recipe_content_text_view);
+            //contentTextView = itemView.findViewById(R.id.recipe_content_text_view);
 
 
         }
