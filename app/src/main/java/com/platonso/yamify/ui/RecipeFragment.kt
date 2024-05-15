@@ -8,6 +8,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.android.identity.android.legacy.Utility
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.model.Document
 import com.platonso.yamify.R
 import com.platonso.yamify.data.Favourites
 import com.platonso.yamify.databinding.FragmentRecipeBinding
@@ -52,7 +55,7 @@ class RecipeFragment : Fragment() {
 
     private fun saveRecipe(){
         val textRecipe = binding.textRecipe.text
-        if (textRecipe.equals(getString(R.string.recipe_will_be_here))) {
+        if (textRecipe.toString() == getString(R.string.recipe_will_be_here) || textRecipe.isNullOrBlank()) {
             Toast.makeText(requireContext(), "Сначала получите рецепт", Toast.LENGTH_SHORT)
                 .show()
             return
@@ -60,10 +63,25 @@ class RecipeFragment : Fragment() {
 
         val favourites = Favourites()
         favourites.setTitle("Заголовок")
-        favourites.setContent("Текст рецепта ------------")
+        favourites.setContent(textRecipe.toString())
+        saveRecipeToFirebase(favourites)
+    }
 
+    private fun saveRecipeToFirebase(favourites: Favourites){
+        val documentReference: DocumentReference
 
+        documentReference = Favourites.getCollectionReferenceForRecipes().document()
 
+        documentReference.set(favourites).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // Рецепт добавлен в избранное
+                Toast.makeText(requireContext(), "Recipe added successfully", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                Toast.makeText(requireContext(), "Failed while adding recipe", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
     }
 
 

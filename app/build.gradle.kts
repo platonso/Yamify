@@ -52,8 +52,10 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
+    implementation(libs.identity.credential.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation ("com.firebaseui:firebase-ui-firestore:8.0.1")
 }
