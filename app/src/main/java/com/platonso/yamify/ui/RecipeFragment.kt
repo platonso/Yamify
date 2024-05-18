@@ -43,16 +43,15 @@ class RecipeFragment : Fragment() {
             textView.text = it
         }
 
-
         binding.buttonAddToFavourites.setOnClickListener {
             saveRecipe()
         }
-
     }
 
     private fun saveRecipe(){
-        val textRecipe = binding.textRecipe.text
-        if (textRecipe.toString() == getString(R.string.recipe_will_be_here) || textRecipe.isNullOrBlank()) {
+        val textRecipe = binding.textRecipe.text.toString()
+        if (textRecipe == getString(R.string.recipe_will_be_here) ||
+            textRecipe == getString(R.string.recipe_is_being_generated)) {
             Toast.makeText(requireContext(), "Сначала получите рецепт", Toast.LENGTH_SHORT)
                 .show()
             return
@@ -69,9 +68,7 @@ class RecipeFragment : Fragment() {
 
     private fun saveRecipeToFirebase(favourites: Favourites){
         val documentReference: DocumentReference
-
         documentReference = Favourites.getCollectionReferenceForRecipes().document()
-
         documentReference.set(favourites).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 // Рецепт добавлен в избранное

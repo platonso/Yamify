@@ -34,5 +34,7 @@
     <string name="exit">Выйти</string>
     <string name="meat_and_cheese">Мясо и сыр</string>
     <string name="recipe_will_be_here">Здесь будет рецепт</string>
+    <string name="recipe_is_being_generated">Подождите, рецепт генерируется</string>
     <string name="promt">В первой строке вывведи только название блюда, выбери из этого списка ингредиенты и составь рецепт:</string>
+    <string name="back">Back</string>
 </resources>

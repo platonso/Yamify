@@ -1,6 +1,5 @@
 package com.platonso.yamify.data;
 
-import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -12,7 +11,6 @@ public class Favourites {
     String content;
 
     public Favourites() {
-
     }
 
     public String getTitle() {
@@ -31,14 +29,9 @@ public class Favourites {
         this.content = content;
     }
 
-
-
     public static CollectionReference getCollectionReferenceForRecipes(){
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         return FirebaseFirestore.getInstance().collection("favourites")
                 .document(currentUser.getUid()).collection("my_favourites");
     }
-
-
-
 }

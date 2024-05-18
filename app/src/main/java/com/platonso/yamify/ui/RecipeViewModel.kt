@@ -14,6 +14,9 @@ class RecipeViewModel: ViewModel() {
     private val _selectedContentFavourites = MutableLiveData<String>()
     val selectedContentFavourites: LiveData<String> get() = _selectedContentFavourites
 
+    private val _selectedDocID = MutableLiveData<String>()
+    val selectedDocId: LiveData<String> get() = _selectedDocID
+
     val toggleButtonStates = mutableMapOf<Int, Boolean>()
     val recipe: LiveData<String> = _recipe
 
@@ -31,6 +34,10 @@ class RecipeViewModel: ViewModel() {
 
     fun setContentFavourites(contentFavourites: String) {
         _selectedContentFavourites.value = contentFavourites
+    }
+
+    fun setDocId(docId: String) {
+        _selectedDocID.value = docId
     }
 
 

@@ -38,6 +38,8 @@ public class RecipeAdapter extends FirestoreRecyclerAdapter<Favourites, RecipeAd
             RecipeViewModel recipeViewModel = new ViewModelProvider(activity).get(RecipeViewModel.class);
             recipeViewModel.setTitleFavourites(favourites.getTitle());
             recipeViewModel.setContentFavourites(favourites.getContent());
+            String docId = this.getSnapshots().getSnapshot(i).getId();
+            recipeViewModel.setDocId(docId);
             FavouritesDetailsFragment favouritesDetailsFragment = new FavouritesDetailsFragment();
             activity.getSupportFragmentManager().beginTransaction()
                     .replace(R.id.nav_host_fragment_activity_main, favouritesDetailsFragment)
@@ -54,9 +56,6 @@ public class RecipeAdapter extends FirestoreRecyclerAdapter<Favourites, RecipeAd
                 .inflate(R.layout.recycler_favourites_item, parent, false);
         return new RecipeViewHolder(view);
     }
-
-
-
 
 
     class RecipeViewHolder extends RecyclerView.ViewHolder{

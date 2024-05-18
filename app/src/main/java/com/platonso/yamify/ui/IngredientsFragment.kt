@@ -66,7 +66,7 @@ class IngredientsFragment : Fragment() {
 
             if (selectedItems.isNotEmpty()) {
                 // Очистка предыдущего полученного рецепта
-                recipeViewModel.setRecipe(getString(R.string.recipe_will_be_here))
+                recipeViewModel.setRecipe(getString(R.string.recipe_is_being_generated))
 
                 val selectedItemsString = selectedItems.joinToString(", ")
 
