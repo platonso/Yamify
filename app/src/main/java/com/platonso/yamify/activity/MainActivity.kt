@@ -9,6 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.platonso.yamify.BuildConfig
 import com.platonso.yamify.R
 import com.platonso.yamify.ui.RecipeViewModel
 import com.platonso.yamify.databinding.ActivityMainBinding
@@ -71,6 +72,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun sendRequest(promt: String, question: String) {
+        val API_KEY = BuildConfig.API_KEY
 
         // Создание объекта и добавление значений в JSON
         val jsonBody = JSONObject().apply {
@@ -100,7 +102,7 @@ class MainActivity : AppCompatActivity() {
 
         val request = Request.Builder()
             .url("https://llm.api.cloud.yandex.net/foundationModels/v1/completion")
-            .header("Authorization", "Api-Key AQVN2XYaLq0s-hHUx50Eyou45Tefnm9Ii7hpcajA")
+            .header("Authorization", API_KEY)
             .post(requestBody)
             .build()
 
