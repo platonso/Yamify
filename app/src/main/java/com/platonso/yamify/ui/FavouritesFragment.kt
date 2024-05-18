@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.Query
+import com.platonso.yamify.R
 import com.platonso.yamify.data.Favourites
 import com.platonso.yamify.databinding.FragmentFavouritesBinding
 
@@ -28,10 +31,8 @@ class FavouritesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         recipeViewModel = ViewModelProvider(requireActivity()).get(RecipeViewModel::class.java)
-
         _binding = FragmentFavouritesBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
         return root
     }
 
@@ -48,6 +49,19 @@ class FavouritesFragment : Fragment() {
         binding.recylerView.layoutManager = LinearLayoutManager(requireContext())
         recipeAdapter = RecipeAdapter(options, com.google.api.Context.getDefaultInstance())
         binding.recylerView.adapter = recipeAdapter
+    }
+
+    private fun deleteRecipe(){
+        activity?.let {
+            AlertDialog.Builder(it).apply {
+                setTitle("Удаление")
+                setMessage("Удалить рецепт из избранного?")
+                setPositiveButton("Удалить"){_,_ ->
+                    Toast.makeText(requireContext(), "Рецепт удален", Toast.LENGTH_SHORT).show()
+                }
+                setNeutralButton("Отмена", null)
+            }.create().show()
+        }
     }
 
 

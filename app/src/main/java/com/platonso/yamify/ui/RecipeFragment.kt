@@ -59,7 +59,7 @@ class RecipeFragment : Fragment() {
         }
 
         val title = textRecipe.toString().substringBefore("\n")
-        val content = textRecipe.toString().replaceFirst(title, "")
+        val content = textRecipe.toString().replaceFirst("$title\n", "")
 
         val favourites = Favourites()
         favourites.setTitle(title)

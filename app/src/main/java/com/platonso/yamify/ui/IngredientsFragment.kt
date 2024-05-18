@@ -17,9 +17,6 @@ class IngredientsFragment : Fragment() {
 
     private var _binding: FragmentIngredientsBinding? = null
     private lateinit var recipeViewModel: RecipeViewModel
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -57,6 +54,7 @@ class IngredientsFragment : Fragment() {
         }
 
         binding.getRecipeButton.setOnClickListener {
+
             // Добавление значений ингредиентов с кнопок в массив
             val selectedItems = mutableListOf<String>()
             for (id in toggleButtonIds) {
@@ -67,8 +65,10 @@ class IngredientsFragment : Fragment() {
             }
 
             if (selectedItems.isNotEmpty()) {
+                // Очистка предыдущего полученного рецепта
+                recipeViewModel.setRecipe(getString(R.string.recipe_will_be_here))
+
                 val selectedItemsString = selectedItems.joinToString(", ")
-                recipeViewModel.setIngredients(selectedItemsString)
 
                 val activity = requireActivity() as? MainActivity
                 activity?.sendRequest(getString(R.string.promt), selectedItemsString)
@@ -82,7 +82,6 @@ class IngredientsFragment : Fragment() {
                 Toast.makeText(requireContext(), "Выберите ингредиенты", Toast.LENGTH_SHORT).show()
             }
         }
-
     }
 
     override fun onDestroyView() {

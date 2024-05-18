@@ -57,8 +57,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun replaceFragment(fragment: Fragment) {
-
         val fragmentManager = supportFragmentManager
+        val currentFragment = fragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main)
+
+        // Проверка, не является ли текущий фрагмент тем же самым
+        if (currentFragment != null && currentFragment::class.java == fragment::class.java) {
+            return
+        }
+
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.nav_host_fragment_activity_main, fragment)
         fragmentTransaction.commit()
