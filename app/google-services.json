@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "263992093246",
+    "project_id": "yamify-7f2ed",
+    "storage_bucket": "yamify-7f2ed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:263992093246:android:7e3eca4bf87a181428bf6f",
+        "android_client_info": {
+          "package_name": "com.platonso.yamify"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWYT5wOjfHz_dw6mqP4rmjL0ABSjQK-Zo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

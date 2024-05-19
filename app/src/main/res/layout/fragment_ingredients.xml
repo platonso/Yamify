@@ -1,22 +1,659 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.ingredients.IngredientsFragment">
-
-    <TextView
-        android:id="@+id/text_ingredients"
+<androidx.core.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:scrollbars="none">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp">
+
+
+        <!-- 1 row -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="15dp"
+            android:text="@string/vegetables"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <ToggleButton
+                        android:id="@+id/toggleButton_tomato"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/tomato_selector"
+                        android:contentDescription="@string/tomato"
+                        android:textOff=""
+                        android:textOn="" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tomato"
+                        android:textStyle="bold"
+                        android:layout_gravity="center_horizontal"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <ToggleButton
+                        android:id="@+id/toggleButton_cucumber"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/cucumber_selector"
+                        android:contentDescription="@string/cucumber"
+                        android:textOff=""
+                        android:textOn="" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/cucumber"
+                        android:textStyle="bold"
+                        android:layout_gravity="center_horizontal"
+                        android:textSize="12sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <ToggleButton
+                        android:id="@+id/toggleButton_pepper"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/pepper_selector"
+                        android:contentDescription="@string/pepper"
+                        android:textOff=""
+                        android:textOn="" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pepper"
+                        android:textStyle="bold"
+                        android:layout_gravity="center_horizontal"
+                        android:textSize="12sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <ToggleButton
+                        android:id="@+id/toggleButton_salad"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/salad_selector"
+                        android:contentDescription="@string/salad"
+                        android:textOff=""
+                        android:textOn="" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/salad"
+                        android:textStyle="bold"
+                        android:layout_gravity="center_horizontal"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <ToggleButton
+                    android:id="@+id/toggleButton_potato"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/potato_selector"
+                    android:contentDescription="@string/potato"
+                    android:textOff=""
+                    android:textOn="" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/potato"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <ToggleButton
+                    android:id="@+id/toggleButton_onion"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/onion_selector"
+                    android:contentDescription="@string/onion"
+                    android:textOff=""
+                    android:textOn="" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/onion"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <ToggleButton
+                    android:id="@+id/toggleButton_avocado"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/avocado_selector"
+                    android:contentDescription="@string/avocado"
+                    android:textOff=""
+                    android:textOn="" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/avocado"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <ToggleButton
+                    android:id="@+id/toggleButton_mushroom"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/mushroom_selector"
+                    android:contentDescription="@string/mushroom"
+                    android:textOff=""
+                    android:textOn="" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mushroom"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+        <!-- 2 row -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="15dp"
+            android:text="@string/meat_and_cheese"
+            android:textSize="20sp"
+            android:textStyle="bold">
+            </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <ToggleButton
+                        android:id="@+id/toggleButton_beef"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/beef_selector"
+                        android:contentDescription="@string/beef"
+                        android:textOff=""
+                        android:textOn="" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/beef"
+                        android:textStyle="bold"
+                        android:layout_gravity="center_horizontal"
+                        android:textSize="12sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <ToggleButton
+                        android:id="@+id/toggleButton_chicken"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/chicken_selector"
+                        android:contentDescription="@string/chicken"
+                        android:textOff=""
+                        android:textOn="" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/chicken"
+                        android:textStyle="bold"
+                        android:layout_gravity="center_horizontal"
+                        android:textSize="12sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <ToggleButton
+                        android:id="@+id/toggleButton_egg"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/egg_selector"
+                        android:contentDescription="@string/egg"
+                        android:textOff=""
+                        android:textOn="" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/egg"
+                        android:textStyle="bold"
+                        android:layout_gravity="center_horizontal"
+                        android:textSize="12sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <ToggleButton
+                        android:id="@+id/toggleButton_cheese"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/cheese_selector"
+                        android:contentDescription="@string/cheese"
+                        android:textOff=""
+                        android:textOn="" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/cheese"
+                        android:textStyle="bold"
+                        android:layout_gravity="center_horizontal"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+
+
+        <!-- 3 row -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="15dp"
+            android:text="@string/seafood"
+            android:textSize="20sp"
+            android:textStyle="bold">
+            </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <ToggleButton
+                    android:id="@+id/toggleButton_fish"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/fish_selector"
+                    android:contentDescription="@string/white_fish"
+                    android:textOff=""
+                    android:textOn="" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/white_fish"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <ToggleButton
+                    android:id="@+id/toggleButton_salmon"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/salmon_selector"
+                    android:contentDescription="@string/salmon"
+                    android:textOff=""
+                    android:textOn="" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/salmon"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <ToggleButton
+                    android:id="@+id/toggleButton_shrimp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/shrimp_selector"
+                    android:contentDescription="@string/shrimp"
+                    android:textOff=""
+                    android:textOn="" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/shrimp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <ToggleButton
+                    android:id="@+id/toggleButton_crab"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/crab_selector"
+                    android:contentDescription="@string/crab"
+                    android:textOff=""
+                    android:textOn="" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/crab"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+        <!-- 4 row -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="15dp"
+            android:text="@string/groceries"
+            android:textSize="20sp"
+            android:textStyle="bold">
+            </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <ToggleButton
+                    android:id="@+id/toggleButton_bread"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/bread_selector"
+                    android:contentDescription="@string/bread"
+                    android:textOff=""
+                    android:textOn="" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bread"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <ToggleButton
+                    android:id="@+id/toggleButton_pasta"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/pasta_selector"
+                    android:contentDescription="@string/pasta"
+                    android:textOff=""
+                    android:textOn="" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pasta"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <ToggleButton
+                    android:id="@+id/toggleButton_rice"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/rice_selector"
+                    android:contentDescription="@string/rice"
+                    android:textOff=""
+                    android:textOn="" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rice"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <ToggleButton
+                    android:id="@+id/toggleButton_flour"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/flour_selector"
+                    android:contentDescription="@string/flour"
+                    android:textOff=""
+                    android:textOn="" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/flour"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+        <!-- button -->
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginVertical="20dp">
+
+            <ImageButton
+                android:id="@+id/getRecipeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:contentDescription="@string/get_recipe"
+                android:background="@drawable/gradient_button"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:text="@string/get_recipe"
+                android:layout_centerInParent="true"/>
+            </RelativeLayout>
+
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
+

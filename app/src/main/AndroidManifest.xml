@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -15,7 +15,19 @@
         android:theme="@style/Theme.Yamify"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.LoginActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.SignupActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.MainActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.StartActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
