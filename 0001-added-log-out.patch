@@ -1,0 +1,543 @@
+From 14e5e31dfc8283221e2532ded1baf9c560bbf3b5 Mon Sep 17 00:00:00 2001
+From: platonso <plat100916@gmail.com>
+Date: Sun, 19 May 2024 01:04:23 +0300
+Subject: [PATCH] added log out
+
+---
+ .../com/platonso/yamify/data/Favourites.java  |  7 --
+ .../yamify/ui/FavouritesDetailsFragment.kt    | 53 ++++++++--
+ .../platonso/yamify/ui/FavouritesFragment.kt  | 47 +++++----
+ .../platonso/yamify/ui/IngredientsFragment.kt |  2 +-
+ .../com/platonso/yamify/ui/RecipeAdapter.java |  5 +-
+ .../com/platonso/yamify/ui/RecipeFragment.kt  |  9 +-
+ .../com/platonso/yamify/ui/RecipeViewModel.kt |  7 ++
+ app/src/main/res/drawable/delete.xml          |  5 +
+ app/src/main/res/drawable/go_back.xml         |  5 +
+ .../main/res/layout/fragment_favourites.xml   | 17 ++--
+ .../layout/fragment_favourites_details.xml    | 96 ++++++++++++++-----
+ app/src/main/res/values/strings.xml           |  2 +
+ 12 files changed, 178 insertions(+), 77 deletions(-)
+ create mode 100644 app/src/main/res/drawable/delete.xml
+ create mode 100644 app/src/main/res/drawable/go_back.xml
+
+diff --git a/app/src/main/java/com/platonso/yamify/data/Favourites.java b/app/src/main/java/com/platonso/yamify/data/Favourites.java
+index 5533e7a..86ec52c 100644
+--- a/app/src/main/java/com/platonso/yamify/data/Favourites.java
++++ b/app/src/main/java/com/platonso/yamify/data/Favourites.java
+@@ -1,6 +1,5 @@
+ package com.platonso.yamify.data;
+ 
+-import com.google.firebase.Firebase;
+ import com.google.firebase.auth.FirebaseAuth;
+ import com.google.firebase.auth.FirebaseUser;
+ import com.google.firebase.firestore.CollectionReference;
+@@ -12,7 +11,6 @@ public class Favourites {
+     String content;
+ 
+     public Favourites() {
+-
+     }
+ 
+     public String getTitle() {
+@@ -31,14 +29,9 @@ public class Favourites {
+         this.content = content;
+     }
+ 
+-
+-
+     public static CollectionReference getCollectionReferenceForRecipes(){
+         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+         return FirebaseFirestore.getInstance().collection("favourites")
+                 .document(currentUser.getUid()).collection("my_favourites");
+     }
+-
+-
+-
+ }
+\ No newline at end of file
+diff --git a/app/src/main/java/com/platonso/yamify/ui/FavouritesDetailsFragment.kt b/app/src/main/java/com/platonso/yamify/ui/FavouritesDetailsFragment.kt
+index 716dccd..0dcf527 100644
+--- a/app/src/main/java/com/platonso/yamify/ui/FavouritesDetailsFragment.kt
++++ b/app/src/main/java/com/platonso/yamify/ui/FavouritesDetailsFragment.kt
+@@ -1,26 +1,23 @@
+ package com.platonso.yamify.ui
+ 
+ import android.os.Bundle
+-import androidx.fragment.app.Fragment
+ import android.view.LayoutInflater
+ import android.view.View
+ import android.view.ViewGroup
+ import android.widget.Toast
+ import androidx.appcompat.app.AlertDialog
++import androidx.fragment.app.Fragment
+ import androidx.lifecycle.ViewModelProvider
+-import androidx.recyclerview.widget.LinearLayoutManager
+-import com.firebase.ui.firestore.FirestoreRecyclerOptions
+ import com.google.android.material.bottomnavigation.BottomNavigationView
+-import com.google.firebase.firestore.Query
++import com.google.firebase.firestore.DocumentReference
+ import com.platonso.yamify.R
+ import com.platonso.yamify.data.Favourites
+-import com.platonso.yamify.databinding.FragmentFavouritesBinding
+ import com.platonso.yamify.databinding.FragmentFavouritesDetailsBinding
+ 
+ class FavouritesDetailsFragment : Fragment() {
+     private var _binding: FragmentFavouritesDetailsBinding? = null
+     private lateinit var recipeViewModel: RecipeViewModel
+-    private lateinit var recipeAdapter: RecipeAdapter
++    private lateinit var docId: String
+ 
+     // This property is only valid between onCreateView and
+     // onDestroyView.
+@@ -40,6 +37,7 @@ class FavouritesDetailsFragment : Fragment() {
+     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+         super.onViewCreated(view, savedInstanceState)
+ 
++
+         // Скрыть BottomNavigationView
+         val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_nav_view)
+         bottomNavigationView?.visibility = View.GONE
+@@ -50,17 +48,54 @@ class FavouritesDetailsFragment : Fragment() {
+         recipeViewModel.selectedContentFavourites.observe(viewLifecycleOwner) {
+             binding.contentTv.text = it
+         }
++        recipeViewModel.selectedDocId.observe(viewLifecycleOwner) {
++            docId = it
++        }
++
++        binding.backBtn.setOnClickListener {
++            requireActivity().onBackPressed()
++        }
++
++        binding.deleteBtn.setOnClickListener{
++            deleteRecipe()
++        }
++    }
+ 
++    private fun deleteRecipe(){
++        activity?.let {
++            AlertDialog.Builder(it).apply {
++                setTitle("Удаление")
++                setMessage("Удалить рецепт из избранного?")
++                setPositiveButton("Удалить"){_,_ ->
++                    deleteRecipeFromFirebase()
++                }
++                setNeutralButton("Отмена", null)
++            }.create().show()
++        }
++    }
+ 
++    private fun deleteRecipeFromFirebase(){
++        val documentReference: DocumentReference
++        documentReference = Favourites.getCollectionReferenceForRecipes().document(docId)
++        documentReference.delete().addOnCompleteListener { task ->
++            if (task.isSuccessful) {
++                // Рецепт удалён
++                Toast.makeText(requireContext(), "Recipe deleted", Toast.LENGTH_SHORT)
++                    .show()
++                requireActivity().onBackPressed()
++            } else {
++                Toast.makeText(requireContext(), "Failed deleted", Toast.LENGTH_SHORT)
++                    .show()
++            }
++        }
+     }
+ 
+ 
+     override fun onDestroyView() {
+         super.onDestroyView()
+ 
+-        // Показать BottomNavigationView
+-        val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_nav_view            )
++        // Вернуть BottomNavigationView
++        val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_nav_view)
+         bottomNavigationView?.visibility = View.VISIBLE
+     }
+-
+ }
+\ No newline at end of file
+diff --git a/app/src/main/java/com/platonso/yamify/ui/FavouritesFragment.kt b/app/src/main/java/com/platonso/yamify/ui/FavouritesFragment.kt
+index bd9bfe7..9399c67 100644
+--- a/app/src/main/java/com/platonso/yamify/ui/FavouritesFragment.kt
++++ b/app/src/main/java/com/platonso/yamify/ui/FavouritesFragment.kt
+@@ -1,5 +1,6 @@
+ package com.platonso.yamify.ui
+ 
++import android.content.Intent
+ import android.os.Bundle
+ import android.view.LayoutInflater
+ import android.view.View
+@@ -10,8 +11,12 @@ import androidx.fragment.app.Fragment
+ import androidx.lifecycle.ViewModelProvider
+ import androidx.recyclerview.widget.LinearLayoutManager
+ import com.firebase.ui.firestore.FirestoreRecyclerOptions
++import com.google.firebase.auth.FirebaseAuth
++import com.google.firebase.auth.FirebaseUser
+ import com.google.firebase.firestore.Query
+ import com.platonso.yamify.R
++import com.platonso.yamify.activity.LoginActivity
++import com.platonso.yamify.activity.MainActivity
+ import com.platonso.yamify.data.Favourites
+ import com.platonso.yamify.databinding.FragmentFavouritesBinding
+ 
+@@ -20,9 +25,6 @@ class FavouritesFragment : Fragment() {
+     private var _binding: FragmentFavouritesBinding? = null
+     private lateinit var recipeViewModel: RecipeViewModel
+     private lateinit var recipeAdapter: RecipeAdapter
+-
+-    // This property is only valid between onCreateView and
+-    // onDestroyView.
+     private val binding get() = _binding!!
+ 
+     override fun onCreateView(
+@@ -38,33 +40,44 @@ class FavouritesFragment : Fragment() {
+ 
+     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+         super.onViewCreated(view, savedInstanceState)
+-        setupRecyclerView()
+-    }
+ 
+-    private fun setupRecyclerView(){
+-        val query: Query = Favourites.getCollectionReferenceForRecipes().orderBy("title", Query.Direction.ASCENDING)
+-        val options: FirestoreRecyclerOptions<Favourites> = FirestoreRecyclerOptions.Builder<Favourites>()
+-            .setQuery(query, Favourites::class.java).build()
++        // Установка почты текущего пользователя в TextView
++        val currentUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
++        binding.userEmailTw.text = currentUser?.email.toString()
+ 
+-        binding.recylerView.layoutManager = LinearLayoutManager(requireContext())
+-        recipeAdapter = RecipeAdapter(options, com.google.api.Context.getDefaultInstance())
+-        binding.recylerView.adapter = recipeAdapter
++        // Отображение списка избранных рецептов в RecyclerView
++        setupRecyclerView()
++
++        // Обработа нажатия выхода из аккаунта
++        binding.exitBtn.setOnClickListener {
++            logOutOfAccount()
++        }
+     }
+ 
+-    private fun deleteRecipe(){
++    private fun logOutOfAccount(){
+         activity?.let {
+             AlertDialog.Builder(it).apply {
+-                setTitle("Удаление")
+-                setMessage("Удалить рецепт из избранного?")
+-                setPositiveButton("Удалить"){_,_ ->
+-                    Toast.makeText(requireContext(), "Рецепт удален", Toast.LENGTH_SHORT).show()
++                setTitle("Выход")
++                setMessage("Выйти из аккаунта?")
++                setPositiveButton("Выйти"){_,_ ->
++                    FirebaseAuth.getInstance().signOut()
++                    startActivity(Intent(requireContext(), LoginActivity::class.java))
++                    activity?.finish()
+                 }
+                 setNeutralButton("Отмена", null)
+             }.create().show()
+         }
+     }
+ 
++    private fun setupRecyclerView(){
++        val query: Query = Favourites.getCollectionReferenceForRecipes().orderBy("title", Query.Direction.ASCENDING)
++        val options: FirestoreRecyclerOptions<Favourites> = FirestoreRecyclerOptions.Builder<Favourites>()
++            .setQuery(query, Favourites::class.java).build()
+ 
++        binding.recylerView.layoutManager = LinearLayoutManager(requireContext())
++        recipeAdapter = RecipeAdapter(options, com.google.api.Context.getDefaultInstance())
++        binding.recylerView.adapter = recipeAdapter
++    }
+ 
+     override fun onStart() {
+         super.onStart()
+diff --git a/app/src/main/java/com/platonso/yamify/ui/IngredientsFragment.kt b/app/src/main/java/com/platonso/yamify/ui/IngredientsFragment.kt
+index 3487e23..b9bf8e8 100644
+--- a/app/src/main/java/com/platonso/yamify/ui/IngredientsFragment.kt
++++ b/app/src/main/java/com/platonso/yamify/ui/IngredientsFragment.kt
+@@ -66,7 +66,7 @@ class IngredientsFragment : Fragment() {
+ 
+             if (selectedItems.isNotEmpty()) {
+                 // Очистка предыдущего полученного рецепта
+-                recipeViewModel.setRecipe(getString(R.string.recipe_will_be_here))
++                recipeViewModel.setRecipe(getString(R.string.recipe_is_being_generated))
+ 
+                 val selectedItemsString = selectedItems.joinToString(", ")
+ 
+diff --git a/app/src/main/java/com/platonso/yamify/ui/RecipeAdapter.java b/app/src/main/java/com/platonso/yamify/ui/RecipeAdapter.java
+index 17d45d8..d113216 100644
+--- a/app/src/main/java/com/platonso/yamify/ui/RecipeAdapter.java
++++ b/app/src/main/java/com/platonso/yamify/ui/RecipeAdapter.java
+@@ -38,6 +38,8 @@ public class RecipeAdapter extends FirestoreRecyclerAdapter<Favourites, RecipeAd
+             RecipeViewModel recipeViewModel = new ViewModelProvider(activity).get(RecipeViewModel.class);
+             recipeViewModel.setTitleFavourites(favourites.getTitle());
+             recipeViewModel.setContentFavourites(favourites.getContent());
++            String docId = this.getSnapshots().getSnapshot(i).getId();
++            recipeViewModel.setDocId(docId);
+             FavouritesDetailsFragment favouritesDetailsFragment = new FavouritesDetailsFragment();
+             activity.getSupportFragmentManager().beginTransaction()
+                     .replace(R.id.nav_host_fragment_activity_main, favouritesDetailsFragment)
+@@ -56,9 +58,6 @@ public class RecipeAdapter extends FirestoreRecyclerAdapter<Favourites, RecipeAd
+     }
+ 
+ 
+-
+-
+-
+     class RecipeViewHolder extends RecyclerView.ViewHolder{
+ 
+         TextView titleTextView, contentTextView;
+diff --git a/app/src/main/java/com/platonso/yamify/ui/RecipeFragment.kt b/app/src/main/java/com/platonso/yamify/ui/RecipeFragment.kt
+index 5bf68eb..8410837 100644
+--- a/app/src/main/java/com/platonso/yamify/ui/RecipeFragment.kt
++++ b/app/src/main/java/com/platonso/yamify/ui/RecipeFragment.kt
+@@ -43,16 +43,15 @@ class RecipeFragment : Fragment() {
+             textView.text = it
+         }
+ 
+-
+         binding.buttonAddToFavourites.setOnClickListener {
+             saveRecipe()
+         }
+-
+     }
+ 
+     private fun saveRecipe(){
+-        val textRecipe = binding.textRecipe.text
+-        if (textRecipe.toString() == getString(R.string.recipe_will_be_here) || textRecipe.isNullOrBlank()) {
++        val textRecipe = binding.textRecipe.text.toString()
++        if (textRecipe == getString(R.string.recipe_will_be_here) ||
++            textRecipe == getString(R.string.recipe_is_being_generated)) {
+             Toast.makeText(requireContext(), "Сначала получите рецепт", Toast.LENGTH_SHORT)
+                 .show()
+             return
+@@ -69,9 +68,7 @@ class RecipeFragment : Fragment() {
+ 
+     private fun saveRecipeToFirebase(favourites: Favourites){
+         val documentReference: DocumentReference
+-
+         documentReference = Favourites.getCollectionReferenceForRecipes().document()
+-
+         documentReference.set(favourites).addOnCompleteListener { task ->
+             if (task.isSuccessful) {
+                 // Рецепт добавлен в избранное
+diff --git a/app/src/main/java/com/platonso/yamify/ui/RecipeViewModel.kt b/app/src/main/java/com/platonso/yamify/ui/RecipeViewModel.kt
+index c962eb9..f10ded5 100644
+--- a/app/src/main/java/com/platonso/yamify/ui/RecipeViewModel.kt
++++ b/app/src/main/java/com/platonso/yamify/ui/RecipeViewModel.kt
+@@ -14,6 +14,9 @@ class RecipeViewModel: ViewModel() {
+     private val _selectedContentFavourites = MutableLiveData<String>()
+     val selectedContentFavourites: LiveData<String> get() = _selectedContentFavourites
+ 
++    private val _selectedDocID = MutableLiveData<String>()
++    val selectedDocId: LiveData<String> get() = _selectedDocID
++
+     val toggleButtonStates = mutableMapOf<Int, Boolean>()
+     val recipe: LiveData<String> = _recipe
+ 
+@@ -33,5 +36,9 @@ class RecipeViewModel: ViewModel() {
+         _selectedContentFavourites.value = contentFavourites
+     }
+ 
++    fun setDocId(docId: String) {
++        _selectedDocID.value = docId
++    }
++
+ 
+ }
+\ No newline at end of file
+diff --git a/app/src/main/res/drawable/delete.xml b/app/src/main/res/drawable/delete.xml
+new file mode 100644
+index 0000000..883bcaa
+--- /dev/null
++++ b/app/src/main/res/drawable/delete.xml
+@@ -0,0 +1,5 @@
++<vector xmlns:android="http://schemas.android.com/apk/res/android" android:height="24dp" android:tint="#000000" android:viewportHeight="24" android:viewportWidth="24" android:width="24dp">
++      
++    <path android:fillColor="@android:color/white" android:pathData="M6,19c0,1.1 0.9,2 2,2h8c1.1,0 2,-0.9 2,-2V7H6v12zM19,4h-3.5l-1,-1h-5l-1,1H5v2h14V4z"/>
++    
++</vector>
+diff --git a/app/src/main/res/drawable/go_back.xml b/app/src/main/res/drawable/go_back.xml
+new file mode 100644
+index 0000000..99f85de
+--- /dev/null
++++ b/app/src/main/res/drawable/go_back.xml
+@@ -0,0 +1,5 @@
++<vector xmlns:android="http://schemas.android.com/apk/res/android" android:autoMirrored="true" android:height="24dp" android:tint="#000000" android:viewportHeight="24" android:viewportWidth="24" android:width="24dp">
++      
++    <path android:fillColor="@android:color/white" android:pathData="M11.67,3.87L9.9,2.1 0,12l9.9,9.9 1.77,-1.77L3.54,12z"/>
++    
++</vector>
+diff --git a/app/src/main/res/layout/fragment_favourites.xml b/app/src/main/res/layout/fragment_favourites.xml
+index 2c950e5..c85d1da 100644
+--- a/app/src/main/res/layout/fragment_favourites.xml
++++ b/app/src/main/res/layout/fragment_favourites.xml
+@@ -16,28 +16,23 @@
+         android:gravity="center">
+ 
+         <TextView
+-            android:id="@+id/textView"
++            android:id="@+id/user_email_tw"
+             android:layout_width="0dp"
+             android:layout_height="match_parent"
+             android:layout_weight="1"
+             android:gravity="center|start"
+-            android:text="Почта@mail.ru"
+-            android:textStyle="bold"
+             android:paddingStart="12dp"
++            android:text="Почта@mail.ru"
+             android:textSize="15sp"
+-            app:layout_constraintEnd_toStartOf="@id/exit_btn"
+-            app:layout_constraintStart_toStartOf="parent"
+-            app:layout_constraintTop_toTopOf="parent" />
++            android:textStyle="bold" />
+ 
+         <ImageButton
+             android:id="@+id/exit_btn"
+-            android:layout_width="25dp"
+-            android:layout_height="36dp"
++            android:layout_width="35dp"
++            android:layout_height="35dp"
+             android:contentDescription="@string/exit"
+             android:src="@drawable/exit_to_app"
+-            android:background="?attr/selectableItemBackgroundBorderless"
+-            app:layout_constraintEnd_toEndOf="parent"
+-            app:layout_constraintTop_toTopOf="parent" />
++            android:background="?attr/selectableItemBackgroundBorderless" />
+ 
+         <TextView
+             android:id="@+id/exit_text"
+diff --git a/app/src/main/res/layout/fragment_favourites_details.xml b/app/src/main/res/layout/fragment_favourites_details.xml
+index eb69e7d..743f1cf 100644
+--- a/app/src/main/res/layout/fragment_favourites_details.xml
++++ b/app/src/main/res/layout/fragment_favourites_details.xml
+@@ -1,40 +1,90 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:tools="http://schemas.android.com/tools"
+     android:id="@+id/fragment_favourites_details"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+-    android:layout_marginHorizontal="20dp"
+     android:orientation="vertical"
++    android:paddingHorizontal="20dp"
+     tools:context=".ui.FavouritesDetailsFragment">
+ 
++
++
++    <LinearLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:orientation="horizontal"
++        android:layout_marginBottom="10dp">
++
++        <ImageButton
++            android:id="@+id/back_btn"
++            android:layout_width="30dp"
++            android:layout_height="30dp"
++
++            android:src="@drawable/go_back"
++            android:contentDescription="@string/back"
++            android:background="?attr/selectableItemBackgroundBorderless"/>
++        <TextView
++            android:id="@+id/textView"
++            android:layout_width="0dp"
++            android:layout_height="match_parent"
++            android:layout_weight="1"
++            android:gravity="center|start"
++            android:text="Назад"
++            android:textSize="15sp" />
++
++        <ImageButton
++            android:id="@+id/delete_btn"
++            android:layout_width="30dp"
++            android:layout_height="30dp"
++            android:contentDescription="@string/exit"
++            android:src="@drawable/delete"
++            android:background="?attr/selectableItemBackgroundBorderless" />
++
++        <TextView
++            android:id="@+id/exit_text"
++            android:layout_width="wrap_content"
++            android:layout_height="match_parent"
++            android:paddingStart="5dp"
++            android:text="Удалить"
++            android:textSize="15sp"
++            android:gravity="center_vertical"
++            tools:ignore="RtlSymmetry" />
++
++    </LinearLayout>
++
++    <ScrollView
++        android:layout_width="match_parent"
++        android:layout_height="match_parent"
++        android:orientation="vertical">
++
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:background="@drawable/rounded_corners_filled"
+         android:orientation="vertical">
+ 
+-    <TextView
+-        android:id="@+id/title_tv"
+-        android:layout_width="match_parent"
+-        android:layout_height="wrap_content"
+-        android:paddingHorizontal="15dp"
+-        android:paddingTop="15dp"
+-        android:text="Title"
+-        android:textSize="17sp"
+-        android:textStyle="bold" />
+-
+-    <TextView
+-        android:id="@+id/content_tv"
+-        android:layout_width="match_parent"
+-        android:layout_height="wrap_content"
+-        android:paddingHorizontal="15dp"
+-        android:textSize="15sp"
+-        android:lineSpacingMultiplier="1.2"
+-        android:text="Content"
+-        android:paddingBottom="15dp"/>
++        <TextView
++            android:id="@+id/title_tv"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:paddingHorizontal="15dp"
++            android:paddingTop="15dp"
++            android:text="Title"
++            android:textSize="17sp"
++            android:textStyle="bold" />
+ 
+-    </LinearLayout>
++        <TextView
++            android:id="@+id/content_tv"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:paddingHorizontal="15dp"
++            android:textSize="15sp"
++            android:lineSpacingMultiplier="1.2"
++            android:text="Content"
++            android:paddingBottom="15dp"/>
+ 
++    </LinearLayout>
++    </ScrollView>
+ 
+-</ScrollView>
+\ No newline at end of file
++</LinearLayout>
+\ No newline at end of file
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+index 51e62f3..c278ebe 100644
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -34,5 +34,7 @@
+     <string name="exit">Выйти</string>
+     <string name="meat_and_cheese">Мясо и сыр</string>
+     <string name="recipe_will_be_here">Здесь будет рецепт</string>
++    <string name="recipe_is_being_generated">Подождите, рецепт генерируется</string>
+     <string name="promt">В первой строке вывведи только название блюда, выбери из этого списка ингредиенты и составь рецепт:</string>
++    <string name="back">Back</string>
+ </resources>
+\ No newline at end of file
+-- 
+2.43.0.windows.1
+
