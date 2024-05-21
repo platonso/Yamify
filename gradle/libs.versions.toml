@@ -17,6 +17,7 @@ googleGmsGoogleServices = "4.4.1"
 firebaseAuth = "23.0.0"
 firebaseFirestore = "25.0.0"
 identityCredentialAndroid = "20231002"
+espressoContrib = "3.5.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -34,6 +35,7 @@ androidx-activity = { group = "androidx.activity", name = "activity", version.re
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 identity-credential-android = { group = "com.android.identity", name = "identity-credential-android", version.ref = "identityCredentialAndroid" }
+androidx-espresso-contrib = { group = "androidx.test.espresso", name = "espresso-contrib", version.ref = "espressoContrib" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

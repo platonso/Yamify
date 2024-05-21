@@ -43,7 +43,7 @@ class FavouritesFragment : Fragment() {
 
         // Установка почты текущего пользователя в TextView
         val currentUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
-        binding.userEmailTw.text = currentUser?.email.toString()
+        binding.userEmailTv.text = currentUser?.email.toString()
 
         // Отображение списка избранных рецептов в RecyclerView
         setupRecyclerView()
@@ -74,9 +74,9 @@ class FavouritesFragment : Fragment() {
         val options: FirestoreRecyclerOptions<Favourites> = FirestoreRecyclerOptions.Builder<Favourites>()
             .setQuery(query, Favourites::class.java).build()
 
-        binding.recylerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recipeAdapter = RecipeAdapter(options, com.google.api.Context.getDefaultInstance())
-        binding.recylerView.adapter = recipeAdapter
+        binding.recyclerView.adapter = recipeAdapter
     }
 
     override fun onStart() {

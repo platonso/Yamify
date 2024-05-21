@@ -19,8 +19,6 @@ class RecipeFragment : Fragment() {
     private var _binding: FragmentRecipeBinding? = null
     private lateinit var recipeViewModel: RecipeViewModel
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -57,12 +55,12 @@ class RecipeFragment : Fragment() {
             return
         }
 
-        val title = textRecipe.toString().substringBefore("\n")
-        val content = textRecipe.toString().replaceFirst("$title\n", "")
+        val title = textRecipe.substringBefore("\n")
+        val content = textRecipe.replaceFirst("$title\n", "")
 
         val favourites = Favourites()
-        favourites.setTitle(title)
-        favourites.setContent(content)
+        favourites.title = title
+        favourites.content = content
         saveRecipeToFirebase(favourites)
     }
 

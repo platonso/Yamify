@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun replaceFragment(fragment: Fragment) {
+     fun replaceFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
         val currentFragment = fragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main)
 
