@@ -1,34 +1,25 @@
 package com.platonso.yamify.activity
 
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.google.ai.client.generativeai.GenerativeModel
 import com.platonso.yamify.BuildConfig
 import com.platonso.yamify.R
-import com.platonso.yamify.ui.RecipeViewModel
 import com.platonso.yamify.databinding.ActivityMainBinding
 import com.platonso.yamify.ui.FavouritesFragment
 import com.platonso.yamify.ui.IngredientsFragment
 import com.platonso.yamify.ui.RecipeFragment
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONArray
-import org.json.JSONObject
-import java.io.IOException
+import com.platonso.yamify.ui.RecipeViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var recipeViewModel: RecipeViewModel
-    private val client = OkHttpClient()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,81 +62,21 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.commit()
     }
 
-    fun sendRequest(promt: String, question: String) {
+    suspend fun sendRequest(promt: String, question: String){
         val API_KEY = BuildConfig.API_KEY
 
-        // Создание объекта и добавление значений в JSON
-        val jsonBody = JSONObject().apply {
-            put("modelUri", "gpt://b1gp1ia0bndrc90m55bm/yandexgpt")
+        val generativeModel = GenerativeModel(
+            modelName = "gemini-pro",
+            apiKey = API_KEY
+        )
 
-            val completionOptions = JSONObject().apply {
-                put("stream", false)
-                put("temperature", 0.5)
-                put("maxTokens", 2000)
-            }
-            put("completionOptions", completionOptions)
+        val prompt = "$promt $question"
+        var response = generativeModel.generateContent(prompt).text.toString()
 
-            // Создание массива сообщений
-            val messages = JSONArray().apply {
-                // Создание объекта сообщения и добавление его в массив
-                val message = JSONObject().apply {
-                    put("role", "user")
-                    put("text", "$promt $question")
-                }
-                put(message)
-            }
-            // Добавление массива сообщений в объект JSON
-            put("messages", messages)
-        }
+        response = response.replace("*", "")
+        response = response.replace("#", "")
 
-        val requestBody = jsonBody.toString().toRequestBody("application/json".toMediaType())
-
-        val request = Request.Builder()
-            .url("https://llm.api.cloud.yandex.net/foundationModels/v1/completion")
-            .header("Authorization", API_KEY)
-            .post(requestBody)
-            .build()
-
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: okhttp3.Call, e: IOException) {
-                runOnUiThread {
-                    Toast.makeText(applicationContext, e.message, Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
-                response.body?.let { responseBody ->
-                    if (response.isSuccessful) {
-                        try {
-                            val jsonResponse = JSONObject(responseBody.string())
-                            val alternatives = jsonResponse
-                                .getJSONObject("result")
-                                .getJSONArray("alternatives")
-                            var text: String = alternatives
-                                .getJSONObject(0)
-                                .getJSONObject("message")
-                                .getString("text")
-                            text = text.replace("*", "")
-                            text = text.replace("#", "")
-
-                            // Обновление ViewModel
-                            runOnUiThread {
-                                recipeViewModel.setRecipe(text)
-                            }
-
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        } finally {
-
-                            // Закрытие ResponseBody для избежания утечек ресурсов
-                            responseBody.close()
-                        }
-                    } else {
-                        Log.e("Response Error", "Code: ${response.code}")
-                    }
-                }
-            }
-        })
+        recipeViewModel.setRecipe(response)
     }
 }
 

@@ -75,4 +75,5 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation ("com.firebaseui:firebase-ui-firestore:8.0.1")
+    implementation("com.google.ai.client.generativeai:generativeai:0.6.0")
 }

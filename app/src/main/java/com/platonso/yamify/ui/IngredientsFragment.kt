@@ -12,6 +12,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.platonso.yamify.R
 import com.platonso.yamify.activity.MainActivity
 import com.platonso.yamify.databinding.FragmentIngredientsBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class IngredientsFragment : Fragment() {
 
@@ -70,8 +73,14 @@ class IngredientsFragment : Fragment() {
 
                 val selectedItemsString = selectedItems.joinToString(", ")
 
-                val activity = requireActivity() as? MainActivity
-                activity?.sendRequest(getString(R.string.promt), selectedItemsString)
+                // Assuming you're in a coroutine context
+                val activity = context as? MainActivity
+                if (activity != null) {
+                    // Call sendRequest in a coroutine
+                    CoroutineScope(Dispatchers.Main).launch {
+                        activity.sendRequest(getString(R.string.promt), selectedItemsString)
+                    }
+                }
 
                 val fragmentTransaction = fragmentManager?.beginTransaction()
                 fragmentTransaction?.replace(R.id.nav_host_fragment_activity_main, RecipeFragment())

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 class RecipeViewModel: ViewModel() {
 
     private val _recipe = MutableLiveData<String>()
+    val recipe: LiveData<String> = _recipe
 
     private val _selectedTitleFavourites = MutableLiveData<String>()
     val selectedTitleFavourites: LiveData<String> get() = _selectedTitleFavourites
@@ -18,19 +19,16 @@ class RecipeViewModel: ViewModel() {
     val selectedDocId: LiveData<String> get() = _selectedDocID
 
     val toggleButtonStates = mutableMapOf<Int, Boolean>()
-    val recipe: LiveData<String> = _recipe
+
+
 
     fun setRecipe(recipe: String) {
         _recipe.value = recipe
     }
 
-
-
-
     fun setTitleFavourites(titleFavourites: String) {
         _selectedTitleFavourites.value = titleFavourites
     }
-
 
     fun setContentFavourites(contentFavourites: String) {
         _selectedContentFavourites.value = contentFavourites
