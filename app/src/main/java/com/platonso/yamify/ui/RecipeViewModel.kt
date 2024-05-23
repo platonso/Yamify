@@ -44,12 +44,8 @@ class RecipeViewModel: ViewModel() {
 
 
 
-
-
-
-    private val API_KEY = BuildConfig.API_KEY
-
     fun sendRequest(prompt: String, question: String) {
+        val API_KEY = BuildConfig.API_KEY
         viewModelScope.launch {
             val generativeModel = GenerativeModel(
                 modelName = "gemini-pro",
@@ -67,6 +63,4 @@ class RecipeViewModel: ViewModel() {
             setRecipe(response)
         }
     }
-
-
 }

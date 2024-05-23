@@ -1,5 +1,6 @@
 package com.platonso.yamify.activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -7,8 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.google.ai.client.generativeai.GenerativeModel
-import com.platonso.yamify.BuildConfig
+import com.google.firebase.auth.FirebaseAuth
 import com.platonso.yamify.R
 import com.platonso.yamify.databinding.ActivityMainBinding
 import com.platonso.yamify.ui.FavouritesFragment
@@ -33,6 +33,12 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
             insets
         }
+
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser == null) {
+            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+        }
+
         recipeViewModel = ViewModelProvider(this).get(RecipeViewModel::class.java)
 
         replaceFragment(IngredientsFragment())
@@ -48,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-     fun replaceFragment(fragment: Fragment) {
+     private fun replaceFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
         val currentFragment = fragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main)
 
@@ -61,27 +67,6 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.replace(R.id.nav_host_fragment_activity_main, fragment)
         fragmentTransaction.commit()
     }
-/*
-    suspend fun sendRequest(promt: String, question: String){
-        val API_KEY = BuildConfig.API_KEY
-
-        val generativeModel = GenerativeModel(
-            modelName = "gemini-pro",
-            apiKey = API_KEY
-        )
-
-        val prompt = "$promt $question"
-        var response = generativeModel.generateContent(prompt).text.toString()
-
-        response = response.replace("*", "")
-        response = response.replace("#", "")
-
-        recipeViewModel.setRecipe(response)
-    }
-
- */
-
-
 }
 
 
