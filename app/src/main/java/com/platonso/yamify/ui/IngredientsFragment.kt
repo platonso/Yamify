@@ -72,9 +72,8 @@ class IngredientsFragment : Fragment() {
 
                 val selectedItemsString = selectedItems.joinToString(", ")
 
-                // Assuming you're in a coroutine context
-                recipeViewModel.sendRequest(getString(R.string.promt), selectedItemsString)
-
+                val activity = requireActivity() as? MainActivity
+                activity?.sendRequest(getString(R.string.promt), selectedItemsString)
 
                 val fragmentTransaction = fragmentManager?.beginTransaction()
                 fragmentTransaction?.replace(R.id.nav_host_fragment_activity_main, RecipeFragment())

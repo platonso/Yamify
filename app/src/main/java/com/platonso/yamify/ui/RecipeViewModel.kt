@@ -42,27 +42,4 @@ class RecipeViewModel: ViewModel() {
         _docID.value = docId
     }
 
-
-
-    fun sendRequest(prompt: String, question: String) {
-        val API_KEY = BuildConfig.API_KEY
-        viewModelScope.launch {
-            val generativeModel = GenerativeModel(
-                modelName = "gemini-pro",
-                apiKey = API_KEY
-            )
-
-            val fullPrompt = "$prompt $question"
-            var response = generativeModel.generateContent(fullPrompt).text.toString()
-
-            response = response.replace("*", "")
-            response = response.replace("#", "")
-            response = response.replace("Название блюда: ", "")
-            response = response.replace("Блюдо: ", "")
-            response = response.replaceFirst("Ингредиенты:\n", "Ингредиенты:")
-            response = response.replaceFirst("Рецепт:\n", "Рецепт:")
-
-            setRecipe(response)
-        }
-    }
 }

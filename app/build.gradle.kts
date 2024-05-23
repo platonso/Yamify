@@ -18,18 +18,23 @@ android {
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        //load the values from local.properties file
         val keystoreFile = project.rootProject.file("local.properties")
         val properties = Properties()
         properties.load(keystoreFile.inputStream())
 
-        //return empty key in case something goes wrong
         val apiKey = properties.getProperty("API_KEY") ?: ""
+        val apiKeyYaGPT = properties.getProperty("API_KEY_YaGPT") ?: ""
 
         buildConfigField(
             type = "String",
             name = "API_KEY",
             value = apiKey
+        )
+
+        buildConfigField(
+            type = "String",
+            name = "API_KEY_YaGPT",
+            value = apiKeyYaGPT
         )
     }
 
