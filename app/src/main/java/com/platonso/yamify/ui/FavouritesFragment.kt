@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -14,9 +13,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.Query
-import com.platonso.yamify.R
 import com.platonso.yamify.activity.LoginActivity
-import com.platonso.yamify.activity.MainActivity
 import com.platonso.yamify.data.Favourites
 import com.platonso.yamify.databinding.FragmentFavouritesBinding
 
@@ -75,7 +72,7 @@ class FavouritesFragment : Fragment() {
             .setQuery(query, Favourites::class.java).build()
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recipeAdapter = RecipeAdapter(options, com.google.api.Context.getDefaultInstance())
+        recipeAdapter = RecipeAdapter(options, requireContext())
         binding.recyclerView.adapter = recipeAdapter
     }
 

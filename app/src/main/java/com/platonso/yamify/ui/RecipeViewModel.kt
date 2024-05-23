@@ -13,14 +13,14 @@ class RecipeViewModel: ViewModel() {
     private val _recipe = MutableLiveData<String>()
     val recipe: LiveData<String> = _recipe
 
-    private val _selectedTitleFavourites = MutableLiveData<String>()
-    val selectedTitleFavourites: LiveData<String> get() = _selectedTitleFavourites
+    private val _titleFavourites = MutableLiveData<String>()
+    val titleFavourites: LiveData<String> get() = _titleFavourites
 
-    private val _selectedContentFavourites = MutableLiveData<String>()
-    val selectedContentFavourites: LiveData<String> get() = _selectedContentFavourites
+    private val _contentFavourites = MutableLiveData<String>()
+    val contentFavourites: LiveData<String> get() = _contentFavourites
 
-    private val _selectedDocID = MutableLiveData<String>()
-    val selectedDocId: LiveData<String> get() = _selectedDocID
+    private val _docID = MutableLiveData<String>()
+    val docId: LiveData<String> get() = _docID
 
     val toggleButtonStates = mutableMapOf<Int, Boolean>()
 
@@ -31,15 +31,15 @@ class RecipeViewModel: ViewModel() {
     }
 
     fun setTitleFavourites(titleFavourites: String) {
-        _selectedTitleFavourites.value = titleFavourites
+        _titleFavourites.value = titleFavourites
     }
 
     fun setContentFavourites(contentFavourites: String) {
-        _selectedContentFavourites.value = contentFavourites
+        _contentFavourites.value = contentFavourites
     }
 
     fun setDocId(docId: String) {
-        _selectedDocID.value = docId
+        _docID.value = docId
     }
 
 
@@ -59,6 +59,8 @@ class RecipeViewModel: ViewModel() {
             response = response.replace("#", "")
             response = response.replace("Название блюда: ", "")
             response = response.replace("Блюдо: ", "")
+            response = response.replaceFirst("Ингредиенты:\n", "Ингредиенты:")
+            response = response.replaceFirst("Рецепт:\n", "Рецепт:")
 
             setRecipe(response)
         }

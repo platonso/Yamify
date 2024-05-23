@@ -433,7 +433,7 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:background="@drawable/salmon_selector"
-                    android:contentDescription="@string/salmon"
+                    android:contentDescription="Красная рыба"
                     android:textOff=""
                     android:textOn="" />
 

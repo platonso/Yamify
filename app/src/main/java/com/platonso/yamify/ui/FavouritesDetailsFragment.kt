@@ -18,9 +18,6 @@ class FavouritesDetailsFragment : Fragment() {
     private var _binding: FragmentFavouritesDetailsBinding? = null
     private lateinit var recipeViewModel: RecipeViewModel
     private lateinit var docId: String
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -42,13 +39,13 @@ class FavouritesDetailsFragment : Fragment() {
         val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_nav_view)
         bottomNavigationView?.visibility = View.GONE
 
-        recipeViewModel.selectedTitleFavourites.observe(viewLifecycleOwner) {
+        recipeViewModel.titleFavourites.observe(viewLifecycleOwner) {
             binding.titleTv.text = it
         }
-        recipeViewModel.selectedContentFavourites.observe(viewLifecycleOwner) {
+        recipeViewModel.contentFavourites.observe(viewLifecycleOwner) {
             binding.contentTv.text = it
         }
-        recipeViewModel.selectedDocId.observe(viewLifecycleOwner) {
+        recipeViewModel.docId.observe(viewLifecycleOwner) {
             docId = it
         }
 
