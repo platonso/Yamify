@@ -3,6 +3,10 @@ package com.platonso.yamify.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.google.ai.client.generativeai.GenerativeModel
+import com.platonso.yamify.BuildConfig
+import kotlinx.coroutines.launch
 
 class RecipeViewModel: ViewModel() {
 
@@ -36,6 +40,32 @@ class RecipeViewModel: ViewModel() {
 
     fun setDocId(docId: String) {
         _selectedDocID.value = docId
+    }
+
+
+
+
+
+
+    private val API_KEY = BuildConfig.API_KEY
+
+    fun sendRequest(prompt: String, question: String) {
+        viewModelScope.launch {
+            val generativeModel = GenerativeModel(
+                modelName = "gemini-pro",
+                apiKey = API_KEY
+            )
+
+            val fullPrompt = "$prompt $question"
+            var response = generativeModel.generateContent(fullPrompt).text.toString()
+
+            response = response.replace("*", "")
+            response = response.replace("#", "")
+            response = response.replace("Название блюда: ", "")
+            response = response.replace("Блюдо: ", "")
+
+            setRecipe(response)
+        }
     }
 
 

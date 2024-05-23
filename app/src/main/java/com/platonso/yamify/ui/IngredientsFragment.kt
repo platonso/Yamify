@@ -12,9 +12,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.platonso.yamify.R
 import com.platonso.yamify.activity.MainActivity
 import com.platonso.yamify.databinding.FragmentIngredientsBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+
 
 class IngredientsFragment : Fragment() {
 
@@ -37,7 +35,8 @@ class IngredientsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val toggleButtonIds = arrayOf(R.id.toggleButton_mushroom, R.id.toggleButton_avocado,
+        val toggleButtonIds = arrayOf(
+            R.id.toggleButton_mushroom, R.id.toggleButton_avocado,
             R.id.toggleButton_beef, R.id.toggleButton_bread, R.id.toggleButton_cheese,
             R.id.toggleButton_chicken, R.id.toggleButton_crab, R.id.toggleButton_cucumber,
             R.id.toggleButton_egg, R.id.toggleButton_fish, R.id.toggleButton_flour,
@@ -74,13 +73,8 @@ class IngredientsFragment : Fragment() {
                 val selectedItemsString = selectedItems.joinToString(", ")
 
                 // Assuming you're in a coroutine context
-                val activity = context as? MainActivity
-                if (activity != null) {
-                    // Call sendRequest in a coroutine
-                    CoroutineScope(Dispatchers.Main).launch {
-                        activity.sendRequest(getString(R.string.promt), selectedItemsString)
-                    }
-                }
+                recipeViewModel.sendRequest(getString(R.string.promt), selectedItemsString)
+
 
                 val fragmentTransaction = fragmentManager?.beginTransaction()
                 fragmentTransaction?.replace(R.id.nav_host_fragment_activity_main, RecipeFragment())

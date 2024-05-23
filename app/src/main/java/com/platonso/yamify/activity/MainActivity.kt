@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.replace(R.id.nav_host_fragment_activity_main, fragment)
         fragmentTransaction.commit()
     }
-
+/*
     suspend fun sendRequest(promt: String, question: String){
         val API_KEY = BuildConfig.API_KEY
 
@@ -78,6 +78,10 @@ class MainActivity : AppCompatActivity() {
 
         recipeViewModel.setRecipe(response)
     }
+
+ */
+
+
 }
 
 
