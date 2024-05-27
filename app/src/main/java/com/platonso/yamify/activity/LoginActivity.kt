@@ -24,7 +24,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var createAccountBtnTextView: TextView
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
@@ -58,7 +57,6 @@ class LoginActivity : AppCompatActivity() {
         if (!isValidated) {
             return
         }
-
         loginAccountFirebase(email, password)
     }
 
@@ -73,8 +71,7 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 // Ошибка входа в аккаунт
                 Toast.makeText(
-                    this@LoginActivity, task.exception?.localizedMessage,
-                    Toast.LENGTH_SHORT
+                    this@LoginActivity, task.exception?.localizedMessage, Toast.LENGTH_SHORT
                 ).show()
             }
             changeInProgress(false)
@@ -94,11 +91,11 @@ class LoginActivity : AppCompatActivity() {
 
     private fun validateData(email: String?, password: String): Boolean {
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailEditText.error = "Email is invalid"
+            emailEditText.error = "Некорректный адрес почты"
             return false
         }
         if (password.length < 6) {
-            passwordEditText.error = "Password is too short"
+            passwordEditText.error = "Пароль должен быть больше 5 символов"
             return false
         }
         return true

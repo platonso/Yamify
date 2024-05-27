@@ -77,11 +77,11 @@ class FavouritesDetailsFragment : Fragment() {
         documentReference.delete().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 // Рецепт удалён
-                Toast.makeText(requireContext(), "Recipe deleted", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), "Рецепт удалён", Toast.LENGTH_SHORT)
                     .show()
                 requireActivity().onBackPressed()
             } else {
-                Toast.makeText(requireContext(), "Failed deleted", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), "Ошибка удаления", Toast.LENGTH_SHORT)
                     .show()
             }
         }

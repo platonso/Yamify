@@ -73,7 +73,7 @@ class SignupActivity : AppCompatActivity() {
                     startActivity(Intent(this@SignupActivity, MainActivity::class.java))
                     Toast.makeText(
                         this@SignupActivity,
-                        "Successfully create account",
+                        "Аккаунт успешно создан",
                         Toast.LENGTH_SHORT
                     ).show()
                     finishAffinity()
@@ -100,15 +100,15 @@ class SignupActivity : AppCompatActivity() {
 
     private fun validateData(email: String, password: String, confirmPassword: String): Boolean {
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailEditText.error = "Email is invalid"
+            emailEditText.error = "Некорректый адрес почты"
             return false
         }
         if (password.length < 6) {
-            passwordEditText.error = "Password is too short"
+            passwordEditText.error = "Пароль должен быть больше 5 символов"
             return false
         }
         if (password != confirmPassword) {
-            passwordEditText.error = "Password not matched"
+            passwordEditText.error = "Пароли не совпадают"
             return false
         }
         return true

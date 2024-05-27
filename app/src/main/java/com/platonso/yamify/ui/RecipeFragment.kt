@@ -70,10 +70,10 @@ class RecipeFragment : Fragment() {
         documentReference.set(favourites).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 // Рецепт добавлен в избранное
-                Toast.makeText(requireContext(), "Recipe added successfully", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), "Рецепт добавлен в избранное", Toast.LENGTH_SHORT)
                     .show()
             } else {
-                Toast.makeText(requireContext(), "Failed while adding recipe", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), "Ошибка добавления", Toast.LENGTH_SHORT)
                     .show()
             }
         }

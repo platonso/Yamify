@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Yamify</string>
-    <string name="ingredients">Ingredients</string>
-    <string name="recipe">Recipe</string>
-    <string name="favourites">Favourites</string>
+    <string name="ingredients">Ингредиенты</string>
+    <string name="recipe">Рецепт</string>
+    <string name="favourites">Избранное</string>
     <string name="tomato">Томаты</string>
     <string name="cucumber">Огурцы</string>
     <string name="potato">Картофель</string>

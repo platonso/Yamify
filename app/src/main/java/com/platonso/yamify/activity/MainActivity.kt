@@ -148,8 +148,6 @@ class MainActivity : AppCompatActivity() {
                         } catch (e: Exception) {
                             e.printStackTrace()
                         } finally {
-
-                            // Закрытие ResponseBody для избежания утечек ресурсов
                             responseBody.close()
                         }
                     } else {
