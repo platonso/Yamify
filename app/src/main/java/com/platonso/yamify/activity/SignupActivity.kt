@@ -1,11 +1,13 @@
 package com.platonso.yamify.activity
 
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -16,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.platonso.yamify.BuildConfig
 import com.platonso.yamify.R
 
 class SignupActivity : AppCompatActivity() {
@@ -26,13 +29,15 @@ class SignupActivity : AppCompatActivity() {
     private lateinit var createAccountBtn: Button
     private lateinit var progressBar: ProgressBar
     private lateinit var loginBtnTextView: TextView
+    private lateinit var developerLogo: ImageView
+    private lateinit var version: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         enableEdgeToEdge()
         setContentView(R.layout.activity_signup)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.create)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.signup)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
@@ -44,9 +49,19 @@ class SignupActivity : AppCompatActivity() {
         createAccountBtn = findViewById(R.id.create_account_btn)
         progressBar = findViewById(R.id.progress_bar)
         loginBtnTextView = findViewById(R.id.login_text_view_btn)
-
+        developerLogo = findViewById(R.id.platonso)
+        version = findViewById(R.id.version_tv)
         createAccountBtn.setOnClickListener { createAccount() }
         loginBtnTextView.setOnClickListener { finish() }
+
+        developerLogo.setOnClickListener {
+            val rotateAnim = ObjectAnimator.ofFloat(developerLogo, "rotation", 0f, 360f)
+            rotateAnim.duration = 1000
+            rotateAnim.start()
+        }
+
+        val versionName = BuildConfig.VERSION_NAME
+        version.text = "Версия: $versionName"
     }
 
     private fun createAccount() {
@@ -58,7 +73,6 @@ class SignupActivity : AppCompatActivity() {
         if (!isValidated) {
             return
         }
-
         createAccountFirebase(email, password)
     }
 

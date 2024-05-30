@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser == null) {
             startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+            finish()
         }
 
         recipeViewModel = ViewModelProvider(this).get(RecipeViewModel::class.java)

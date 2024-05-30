@@ -37,4 +37,12 @@
     <string name="recipe_is_being_generated">Подождите, рецепт генерируется</string>
     <string name="promt">В первой строке вывведи только название блюда, выбери из этого списка ингредиенты и составь рецепт:</string>
     <string name="back">Back</string>
+    <string name="email">Электропочта</string>
+    <string name="password">Пароль</string>
+    <string name="confirm_password">Подтверждение пароля</string>
+    <string name="create_account">Создать аккаунт</string>
+    <string name="already_have_account">Уже есть аккаунт? Войти</string>
+    <string name="registration">Регистрация</string>
+    <string name="to_login">Войти</string>
+    <string name="login">Вход</string>
 </resources>

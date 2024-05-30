@@ -1,5 +1,6 @@
 package com.platonso.yamify.activity
 
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.util.Patterns
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -15,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
+import com.platonso.yamify.BuildConfig
 import com.platonso.yamify.R
 
 class LoginActivity : AppCompatActivity() {
@@ -23,7 +26,10 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var loginBtn: Button
     private lateinit var progressBar: ProgressBar
     private lateinit var createAccountBtnTextView: TextView
+    private lateinit var developerLogo: ImageView
+    private lateinit var version: TextView
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
@@ -41,11 +47,22 @@ class LoginActivity : AppCompatActivity() {
         loginBtn = findViewById(R.id.login_btn)
         progressBar = findViewById(R.id.progress_bar)
         createAccountBtnTextView = findViewById(R.id.create_account_text_view_btn)
+        developerLogo = findViewById(R.id.platonso)
+        version = findViewById(R.id.version_tv)
 
         loginBtn.setOnClickListener { loginUser() }
         createAccountBtnTextView.setOnClickListener {
             startActivity(Intent(this@LoginActivity, SignupActivity::class.java))
         }
+
+        developerLogo.setOnClickListener {
+            val rotateAnim = ObjectAnimator.ofFloat(developerLogo, "rotation", 0f, 360f)
+            rotateAnim.duration = 1000
+            rotateAnim.start()
+        }
+
+        val versionName = BuildConfig.VERSION_NAME
+        version.text = "Версия: $versionName"
 
     }
 
