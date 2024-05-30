@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +17,7 @@ import com.google.firebase.firestore.Query
 import com.platonso.yamify.activity.LoginActivity
 import com.platonso.yamify.data.Favourites
 import com.platonso.yamify.databinding.FragmentFavouritesBinding
+import java.util.Locale
 
 class FavouritesFragment : Fragment() {
 
@@ -40,15 +42,35 @@ class FavouritesFragment : Fragment() {
 
         // Установка почты текущего пользователя в TextView
         val currentUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
-        binding.userEmailTv.text = currentUser?.email.toString()
-
-        // Отображение списка избранных рецептов в RecyclerView
-        setupRecyclerView()
+        binding.userEmailTw.text = currentUser?.email.toString()
 
         // Обработа нажатия выхода из аккаунта
         binding.exitBtn.setOnClickListener {
             logOutOfAccount()
         }
+
+        // Отображение списка избранных рецептов в RecyclerView
+        setupRecyclerView("")
+
+        // Слушатель на изменения текста в SearchView
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(searchQuery: String): Boolean {
+                // Обновляем запрос при изменении текста в поисковом поле
+                if (searchQuery.isEmpty()) {
+                    setupRecyclerView(searchQuery)
+                } else {
+                    val newSearchQuery = searchQuery.replaceFirstChar {
+                        if (it.isLowerCase()) it.titlecase(Locale.getDefault())
+                        else it.toString() }
+                    setupRecyclerView(newSearchQuery)
+                }
+                return true
+            }
+        })
     }
 
     private fun logOutOfAccount(){
@@ -66,14 +88,25 @@ class FavouritesFragment : Fragment() {
         }
     }
 
-    private fun setupRecyclerView(){
-        val query: Query = Favourites.getCollectionReferenceForRecipes().orderBy("title", Query.Direction.ASCENDING)
-        val options: FirestoreRecyclerOptions<Favourites> = FirestoreRecyclerOptions.Builder<Favourites>()
-            .setQuery(query, Favourites::class.java).build()
+    private fun setupRecyclerView(searchText: String) {
+        val query: Query
+        if (searchText.isEmpty()) {
+            query = Favourites.getCollectionReferenceForRecipes().orderBy("title", Query.Direction.ASCENDING)
+        } else {
+            query = Favourites.getCollectionReferenceForRecipes()
+                .orderBy("title")
+                .startAt(searchText)
+                .endAt("$searchText\uf8ff")
+        }
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val options = FirestoreRecyclerOptions.Builder<Favourites>()
+            .setQuery(query, Favourites::class.java)
+            .build()
+
         recipeAdapter = RecipeAdapter(options, requireContext())
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = recipeAdapter
+        recipeAdapter.startListening()
     }
 
     override fun onStart() {

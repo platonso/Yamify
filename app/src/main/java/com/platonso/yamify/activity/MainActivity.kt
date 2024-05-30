@@ -25,6 +25,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
@@ -140,6 +141,9 @@ class MainActivity : AppCompatActivity() {
                                 .replace("Блюдо: ", "")
                                 .replaceFirst("Ингредиенты:\n\n", "Ингредиенты:\n")
                                 .replaceFirst("Рецепт:\n\n", "Рецепт:\n")
+                            text = text.replaceFirstChar {
+                                if (it.isLowerCase()) it.titlecase(Locale.getDefault())
+                                else it.toString() }
 
                             // Обновление ViewModel
                             runOnUiThread {
