@@ -86,11 +86,11 @@ class MainActivity : AppCompatActivity() {
 
         // Создание объекта и добавление значений в JSON
         val jsonBody = JSONObject().apply {
-            put("modelUri", "gpt://b1gp1ia0bndrc90m55bm/yandexgpt")
+            put("modelUri", "gpt://b1gp1ia0bndrc90m55bm/yandexgpt-lite")
 
             val completionOptions = JSONObject().apply {
                 put("stream", false)
-                put("temperature", 0.5)
+                put("temperature", 0.6)
                 put("maxTokens", 2000)
             }
             put("completionOptions", completionOptions)
@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity() {
 
                             // Обновление ViewModel
                             runOnUiThread {
-                                recipeViewModel.setRecipe(text)
+                                recipeViewModel.setRecipe(text.trim())
                             }
 
                         } catch (e: Exception) {
