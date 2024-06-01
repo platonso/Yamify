@@ -22,7 +22,7 @@ import java.util.Locale
 class FavouritesFragment : Fragment() {
 
     private var _binding: FragmentFavouritesBinding? = null
-    private lateinit var recipeViewModel: RecipeViewModel
+    private lateinit var recipeDataManager: RecipeDataManager
     private lateinit var recipeAdapter: RecipeAdapter
     private val binding get() = _binding!!
 
@@ -31,7 +31,7 @@ class FavouritesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        recipeViewModel = ViewModelProvider(requireActivity()).get(RecipeViewModel::class.java)
+        recipeDataManager = ViewModelProvider(requireActivity()).get(RecipeDataManager::class.java)
         _binding = FragmentFavouritesBinding.inflate(inflater, container, false)
         val root: View = binding.root
         return root

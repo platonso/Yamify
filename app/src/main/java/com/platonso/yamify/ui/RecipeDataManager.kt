@@ -3,12 +3,8 @@ package com.platonso.yamify.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.google.ai.client.generativeai.GenerativeModel
-import com.platonso.yamify.BuildConfig
-import kotlinx.coroutines.launch
 
-class RecipeViewModel: ViewModel() {
+class RecipeDataManager: ViewModel() {
 
     private val _recipe = MutableLiveData<String>()
     val recipe: LiveData<String> = _recipe

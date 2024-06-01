@@ -17,7 +17,7 @@ import com.platonso.yamify.databinding.FragmentIngredientsBinding
 class IngredientsFragment : Fragment() {
 
     private var _binding: FragmentIngredientsBinding? = null
-    private lateinit var recipeViewModel: RecipeViewModel
+    private lateinit var recipeDataManager: RecipeDataManager
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -25,7 +25,7 @@ class IngredientsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        recipeViewModel = ViewModelProvider(requireActivity()).get(RecipeViewModel::class.java)
+        recipeDataManager = ViewModelProvider(requireActivity()).get(RecipeDataManager::class.java)
 
         _binding = FragmentIngredientsBinding.inflate(inflater, container, false)
 
@@ -47,11 +47,11 @@ class IngredientsFragment : Fragment() {
         // Установка начальных состояний из ViewModel
         for (id in toggleButtonIds) {
             val toggleButton = view.findViewById<ToggleButton>(id)
-            toggleButton.isChecked = recipeViewModel.toggleButtonStates[id] ?: false
+            toggleButton.isChecked = recipeDataManager.toggleButtonStates[id] ?: false
 
             // Сохранение состояния при изменении
             toggleButton.setOnCheckedChangeListener { _, isChecked ->
-                recipeViewModel.toggleButtonStates[id] = isChecked
+                recipeDataManager.toggleButtonStates[id] = isChecked
             }
         }
 
@@ -68,7 +68,7 @@ class IngredientsFragment : Fragment() {
 
             if (selectedItems.isNotEmpty()) {
                 // Очистка предыдущего полученного рецепта
-                recipeViewModel.setRecipe(getString(R.string.recipe_is_being_generated))
+                recipeDataManager.setRecipe(getString(R.string.recipe_is_being_generated))
 
                 val selectedItemsString = selectedItems.joinToString(", ")
 

@@ -16,7 +16,7 @@ import com.platonso.yamify.databinding.FragmentFavouritesDetailsBinding
 
 class FavouritesDetailsFragment : Fragment() {
     private var _binding: FragmentFavouritesDetailsBinding? = null
-    private lateinit var recipeViewModel: RecipeViewModel
+    private lateinit var recipeDataManager: RecipeDataManager
     private lateinit var docId: String
     private val binding get() = _binding!!
 
@@ -25,7 +25,7 @@ class FavouritesDetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        recipeViewModel = ViewModelProvider(requireActivity()).get(RecipeViewModel::class.java)
+        recipeDataManager = ViewModelProvider(requireActivity()).get(RecipeDataManager::class.java)
         _binding = FragmentFavouritesDetailsBinding.inflate(inflater, container, false)
         val root: View = binding.root
         return root
@@ -39,13 +39,13 @@ class FavouritesDetailsFragment : Fragment() {
         val bottomNavigationView = activity?.findViewById<BottomNavigationView>(R.id.bottom_nav_view)
         bottomNavigationView?.visibility = View.GONE
 
-        recipeViewModel.titleFavourites.observe(viewLifecycleOwner) {
+        recipeDataManager.titleFavourites.observe(viewLifecycleOwner) {
             binding.titleTv.text = it
         }
-        recipeViewModel.contentFavourites.observe(viewLifecycleOwner) {
+        recipeDataManager.contentFavourites.observe(viewLifecycleOwner) {
             binding.contentTv.text = it
         }
-        recipeViewModel.docId.observe(viewLifecycleOwner) {
+        recipeDataManager.docId.observe(viewLifecycleOwner) {
             docId = it
         }
 

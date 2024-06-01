@@ -17,7 +17,7 @@ import com.platonso.yamify.databinding.ActivityMainBinding
 import com.platonso.yamify.ui.FavouritesFragment
 import com.platonso.yamify.ui.IngredientsFragment
 import com.platonso.yamify.ui.RecipeFragment
-import com.platonso.yamify.ui.RecipeViewModel
+import com.platonso.yamify.ui.RecipeDataManager
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -30,7 +30,7 @@ import java.util.Locale
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var recipeViewModel: RecipeViewModel
+    private lateinit var recipeDataManager: RecipeDataManager
     private val client = OkHttpClient()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
-        recipeViewModel = ViewModelProvider(this).get(RecipeViewModel::class.java)
+        recipeDataManager = ViewModelProvider(this).get(RecipeDataManager::class.java)
 
         replaceFragment(IngredientsFragment())
 
@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity() {
 
                             // Обновление ViewModel
                             runOnUiThread {
-                                recipeViewModel.setRecipe(text.trim())
+                                recipeDataManager.setRecipe(text.trim())
                             }
 
                         } catch (e: Exception) {

@@ -1,7 +1,6 @@
 package com.platonso.yamify.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,7 @@ import com.platonso.yamify.databinding.FragmentRecipeBinding
 class RecipeFragment : Fragment() {
 
     private var _binding: FragmentRecipeBinding? = null
-    private lateinit var recipeViewModel: RecipeViewModel
+    private lateinit var recipeDataManager: RecipeDataManager
 
     private val binding get() = _binding!!
 
@@ -26,7 +25,7 @@ class RecipeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        recipeViewModel = ViewModelProvider(requireActivity()).get(RecipeViewModel::class.java)
+        recipeDataManager = ViewModelProvider(requireActivity()).get(RecipeDataManager::class.java)
         _binding = FragmentRecipeBinding.inflate(inflater, container, false)
         binding.textRecipe.text = getString(R.string.recipe_will_be_here)
         return binding.root
@@ -37,7 +36,7 @@ class RecipeFragment : Fragment() {
 
         // Отображение результата
         val textView: TextView = binding.textRecipe
-        recipeViewModel.recipe.observe(viewLifecycleOwner) {
+        recipeDataManager.recipe.observe(viewLifecycleOwner) {
             textView.text = it
         }
 

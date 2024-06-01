@@ -22,11 +22,11 @@ class RecipeAdapter(options: FirestoreRecyclerOptions<Favourites>, val context: 
 
         holder.itemView.setOnClickListener {
             val activity = it.context as AppCompatActivity
-            val recipeViewModel = ViewModelProvider(activity).get(RecipeViewModel::class.java)
-            model.title?.let { it1 -> recipeViewModel.setTitleFavourites(it1) }
-            model.content?.let { it1 -> recipeViewModel.setContentFavourites(it1) }
+            val recipeDataManager = ViewModelProvider(activity).get(RecipeDataManager::class.java)
+            model.title?.let { it1 -> recipeDataManager.setTitleFavourites(it1) }
+            model.content?.let { it1 -> recipeDataManager.setContentFavourites(it1) }
             val docId = snapshots.getSnapshot(position).id
-            recipeViewModel.setDocId(docId)
+            recipeDataManager.setDocId(docId)
             val favouritesDetailsFragment = FavouritesDetailsFragment()
             activity.supportFragmentManager.beginTransaction()
                     .replace(R.id.nav_host_fragment_activity_main, favouritesDetailsFragment)
